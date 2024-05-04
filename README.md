@@ -7,8 +7,9 @@ Dieses Repository wurde im Rahmen der Fächer Verteilte Systeme und Steuergerät
 
 Wenn der Begriff einer Micromouse unbekannt ist findet man unter diesem Link ein Erläuterungsvideo:
 https://www.youtube.com/watch?v=ZMQbHMgK2rw
+***
 
-## Getting started
+## PlaceHolder
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
