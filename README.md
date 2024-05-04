@@ -1,5 +1,5 @@
 # MicroRat Technical Documentation
-
+![Micromouse_Green_Giant_V1.3](/uploads/98c196074a2a1a9f02db60baccf53e06/Micromouse_Green_Giant_V1.3.jpg)
 
 
 ## Getting started
