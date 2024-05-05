@@ -16,7 +16,7 @@ Micromouse ist ein Robotikwettbewerb, in dem sich kleine, autonome Roboterfahrze
 
 **Unsere Umsetzung**
 
-Eine Micromouse wird sieht je nach Erbauer unterschiedlich aus. Unsere Projekt soll grundlegenden Funktionen erhalten, sodass die Benutzung und Programmierung für den User einfach ist. Für die Abstandserfassung sind Infrarot-Sensoren von SHARP jeweils in einem Winkel von 45MARCUS befestigt, sowie ein Ultraschall-Sensor an der Spitze montiert. Dadurch erfasst die Micromouse die genaue Position der Wände.
+Eine Micromouse wird sieht je nach Erbauer unterschiedlich aus. Unsere Projekt soll grundlegenden Funktionen erhalten, sodass die Benutzung und Programmierung für den User einfach ist. Für die Abstandserfassung sind Infrarot-Sensoren von SHARP jeweils in einem Winkel von 45° befestigt, sowie ein Ultraschall-Sensor an der Spitze montiert. Dadurch erfasst die Micromouse die genaue Position der Wände.
 
 An den beiden Motoren, welche zur Fortbewegung dienen, ist zudem ein Encoder für die Drehzahlerfassung befestigt. 
 
