@@ -28,6 +28,8 @@ Angesteuert wird das Kit über ein XMC-1402, der über ein Debug-Connector progr
 
 ***
 ## Hardware
+<div align="center">
+	<img src="https://raw.githubusercontent.com/lucysrausch/hoverboard-firmware-hack/master/pinout.png" width= "500">
 
 
 
