@@ -4006,6 +4006,213 @@
 				)
 			)
 		)
+		(symbol "XMC_Debug:Debug_Stecker"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Debug_Stecker_0_1"
+				(rectangle
+					(start -8.89 -2.54)
+					(end 7.62 -12.7)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Debug_Stecker_1_1"
+				(pin input line
+					(at -11.43 -3.81 0)
+					(length 2.54)
+					(name "SW_CLK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 10.16 -3.81 180)
+					(length 2.54)
+					(name "3.3V"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -11.43 -6.35 0)
+					(length 2.54)
+					(name "SWD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 10.16 -6.35 180)
+					(length 2.54)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at -11.43 -8.89 0)
+					(length 2.54)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at -11.43 -11.43 0)
+					(length 2.54)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 10.16 -8.89 180)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 10.16 -11.43 180)
+					(length 2.54)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "power:+5V"
 			(power)
 			(pin_numbers hide)
@@ -6114,6 +6321,18 @@
 		(uuid 8305b804-5af8-44ec-baa6-18743dcbf8af)
 	)
 	(rectangle
+		(start 66.04 130.81)
+		(end 100.33 151.13)
+		(stroke
+			(width 0.254)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid a0faf40a-0ffc-42f5-a620-63ff4eab6946)
+	)
+	(rectangle
 		(start 279.4 106.68)
 		(end 279.4 106.68)
 		(stroke
@@ -6292,6 +6511,16 @@
 			)
 		)
 		(uuid "b940f346-40ba-4640-9d50-259c7d47a91e")
+	)
+	(text "Debug Stecker"
+		(exclude_from_sim no)
+		(at 83.82 128.778 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "cb233e2e-3346-48ff-aea4-3b58d78d451f")
 	)
 	(text "Magnetic Encoder M1"
 		(exclude_from_sim no)
@@ -8139,6 +8368,92 @@
 			(project "Microrat"
 				(path "/aa0a1eb8-88c0-4621-81d3-41407e330c9d"
 					(reference "C5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "XMC_Debug:Debug_Stecker")
+		(at 83.82 134.62 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "254b10be-475d-4d71-b93e-99358ad4abb1")
+		(property "Reference" "U7"
+			(at 83.185 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "~"
+			(at 83.185 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 83.82 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 83.82 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 83.82 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "976562d2-6749-4782-8685-9d3d9a6cc6e8")
+		)
+		(pin "7"
+			(uuid "4078b393-7dea-4037-9874-bed526cffd3a")
+		)
+		(pin "4"
+			(uuid "ceafee20-fa7a-4dd3-8a02-e14cb67055d6")
+		)
+		(pin "3"
+			(uuid "53bd10e5-0b05-47f9-ae8c-252db9d81cfa")
+		)
+		(pin "5"
+			(uuid "756cc62c-5a7b-432b-b78a-69075832f93c")
+		)
+		(pin "7"
+			(uuid "5c18e19e-76c8-4024-be70-fb2034fc36d1")
+		)
+		(pin "8"
+			(uuid "e2f1b1e9-001b-4402-b7e9-11d15b5cb871")
+		)
+		(pin "1"
+			(uuid "091ef785-3e41-4008-b0d8-ef235321d8d1")
+		)
+		(instances
+			(project "Microrat"
+				(path "/aa0a1eb8-88c0-4621-81d3-41407e330c9d"
+					(reference "U7")
 					(unit 1)
 				)
 			)
