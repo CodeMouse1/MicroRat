@@ -32,8 +32,8 @@ Angesteuert wird das Kit über ein XMC-1402, der über ein Debug-Connector progr
 ## Hardware
 **PlaceHolder**
 <div align="center">
-	<img src="https://raw.githubusercontent.com/lucysrausch/hoverboard-firmware-hack/master/pinout.png" width= "1500">
-
+![Microrat_Render2](/uploads/c9efd14c18da91d574844993bb5b45e3/Microrat_Render2.png)
+	
 
 
 ## Integrate with your tools
