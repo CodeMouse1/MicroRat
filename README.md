@@ -29,6 +29,19 @@ Angesteuert wird das Kit über ein XMC-1402, der über ein Debug-Connector progr
 <div align="center" > Dieses Bild stammt aus [futurezone](https://futurezone.at/digital-life/roboter-maus-micromouse-labyrinth-kuenstliche-intelligenz-nerf-gun-kurios-videos/402506761)
 
 ***
+## Verwendung von KiCad 8.0
+<div align="left">
+Für dieses Projekt haben wir KiCad 8.0 gewählt aus folgenden Gründen:
+<br/><br/>
+
+- **Fortschrittliche Funktionen:** Bietet erweiterte Tools für Schaltplanerstellung und Leiterplattendesign.
+- **Open-Source-Software:** Kostenfrei und kontinuierlich verbessert durch eine große Community.
+- **Plattformübergreifende Unterstützung:** Ermöglicht nahtlose Zusammenarbeit unabhängig vom Betriebssystem.
+
+- **Kompatibilität und Exportmöglichkeiten:** Unterstützt viele Dateiformate und erleichtert die Integration mit anderen Tools.
+
+Für eine Einführung in KiCad bitte dieser Maus folgen: [🐀](https://docs.kicad.org/)
+
 ## Hardware
 **PlaceHolder**
 <div align="center">
