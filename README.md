@@ -30,6 +30,8 @@ Angesteuert wird das Kit über ein XMC-1402, der über ein Debug-Connector progr
 
 ***
 ## Verwendung von KiCad 8.0
+<div align="center">
+	<img src="https://avatars.githubusercontent.com/u/3374914?s=280&v=4" width= "50">
 <div align="left">
 Für dieses Projekt haben wir KiCad 8.0 gewählt aus folgenden Gründen:
 <br/><br/>
@@ -40,12 +42,22 @@ Für dieses Projekt haben wir KiCad 8.0 gewählt aus folgenden Gründen:
 
 - **Kompatibilität und Exportmöglichkeiten:** Unterstützt viele Dateiformate und erleichtert die Integration mit anderen Tools.
 
-Für eine Einführung in KiCad bitte dieser Maus folgen: [🐀](https://docs.kicad.org/)
+Für eine grundlegende Einführung in KiCad bitte dieser Ratte folgen: [🐀](https://docs.kicad.org/)
 
+***
 ## Hardware
-**PlaceHolder**
+Diese bereitgestellte Hardware stellt eine vereinfachte Version einer Micromouse dar, wie sie heutzutage häufig anzutreffen ist. Grund dafür ist das heutige Micromäuse stark optimiert sind, wie erwähnt soll diese als eine Einstiegsplattform in die Welt der autnonomen Pfadfindung und Robotik dienen.
+
+**Grundlegender Aufbau:**
+
+- Umfeldsensorik **Front**
+- Aktorik und Verarbeitung **Mitte**
+- Schutz, Versorgung und weitere Anschluss-Pins **Hinterseite**
+
+Diese ausgelegten Pins bestehen aus 5 GPIOs, sowohl als auch einer UART und I²C Schnittstelle. Somit haben zukünftige Studenten die Möglichkeit je nach Anforderung die MicroRat zu erweitern.
 <div align="center">
 ![Microrat_Render2](/uploads/c9efd14c18da91d574844993bb5b45e3/Microrat_Render2.png)
+<div align="left">
 	
 
 
