@@ -61,15 +61,22 @@ Diese ausgelegten Pins bestehen aus 5 GPIOs, sowohl als auch einer UART und I²C
 	
 
 
-## Anletiung?
+## Anleitung?
 
 ## Beispielanwendung
 
 ## Lizenzinformationen
 
-# Kontaktinformationen
+## Kontaktinformationen
+Bei Fragen oder Problemen könnt Ihr uns gerne kontaktieren:
+
+Entwickler: [Marcus Stake Alvarado](s88832@bht-berlin.de)
+
+Entwickler: [Nico Hinrichs](s93467@bht-berlin.de)
+
+<div align="center">
+
+**Viel Spaß mit der MicroRat**
 
 
 
-
-also make an explicit request for maintainers.
