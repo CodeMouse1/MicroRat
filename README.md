@@ -78,5 +78,7 @@ Entwickler: [Nico Hinrichs](s93467@bht-berlin.de)
 
 **Viel Spaß mit der MicroRat**
 
+![Face-14-512](/uploads/a4284d4abe20ee8daba8ffba1f62310e/Face-14-512.jpg)
+
 
 
