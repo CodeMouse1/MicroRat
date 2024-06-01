@@ -66,6 +66,7 @@ Diese ausgelegten Pins bestehen aus 5 GPIOs, sowohl als auch einer UART und I²C
 ## Beispielanwendung
 
 ## Lizenzinformationen
+Dieses Projekt ist zur allgemeinen Nutzung freigegeben. Es gibt keine spezifische Lizenz. Ihr könnt es nutzen, wie ihr möchtet.
 
 ## Mitwirken
 Wir freuen uns auf eure Erweiterungen! Wenn du an diesem Projekt mitarbeiten möchtest, folge bitte diesen Schritten:
