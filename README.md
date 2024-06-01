@@ -101,7 +101,7 @@ Bei Fragen oder Problemen könnt Ihr uns gerne kontaktieren:
 
 Entwickler: [Marcus Stake Alvarado](mailto:s88832@bht-berlin.de)
 
-Entwickler: [Nico Hinrichs](s93467@bht-berlin.de)
+Entwickler: [Nico Hinrichs](mailto:s87913@bht-berlin.de)
 
 <div align="center">
 
