@@ -67,6 +67,34 @@ Diese ausgelegten Pins bestehen aus 5 GPIOs, sowohl als auch einer UART und I²C
 
 ## Lizenzinformationen
 
+## Mitwirken
+Wir freuen uns auf eure Erweiterungen! Wenn du an diesem Projekt mitarbeiten möchtest, folge bitte diesen Schritten:
+
+1. **Fork dieses Repository**: Klicke oben rechts auf die Schaltfläche "Fork", um eine Kopie des Repositories in deinem GitHub-Konto zu erstellen.
+
+2. **Clone das Forked Repository**: Klone dein geforktes Repository auf deinen lokalen Rechner.
+    ```bash
+    git clone https://github.com/dein-username/dein-repository.git
+    ```
+
+3. **Erstelle einen neuen Branch**: Erstelle einen neuen Branch für deine Arbeit.
+    ```bash
+    git checkout -b mein-neuer-branch
+    ```
+
+4. **Nimm deine Änderungen vor**: Führe die gewünschten Änderungen durch und committe sie.
+    ```bash
+    git add .
+    git commit -m "Beschreibe deine Änderungen"
+    ```
+
+5. **Push deine Änderungen**: Push deine Änderungen zu deinem Fork.
+    ```bash
+    git push origin mein-neuer-branch
+    ```
+
+6. **Erstelle einen Pull Request**: Gehe zu deinem geforkten Repository auf GitHub und klicke auf die Schaltfläche "New Pull Request", um deine Änderungen zur Überprüfung einzureichen.
+
 ## Kontaktinformationen
 Bei Fragen oder Problemen könnt Ihr uns gerne kontaktieren:
 
