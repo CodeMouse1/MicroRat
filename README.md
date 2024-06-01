@@ -70,7 +70,7 @@ Diese ausgelegten Pins bestehen aus 5 GPIOs, sowohl als auch einer UART und I²C
 ## Kontaktinformationen
 Bei Fragen oder Problemen könnt Ihr uns gerne kontaktieren:
 
-Entwickler: [Marcus Stake Alvarado](s88832@bht-berlin.de)
+Entwickler: [Marcus Stake Alvarado](mailto:s88832@bht-berlin.de)
 
 Entwickler: [Nico Hinrichs](s93467@bht-berlin.de)
 
