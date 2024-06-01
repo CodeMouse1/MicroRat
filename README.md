@@ -1,4 +1,4 @@
-# MicroRat: Eine Technische Dokumentation
+# MicroRat: Eine technische Dokumentation
 
 <div align="center">
 	<img src="https://media3.giphy.com/media/sbFY50AHtKuyYMWtKj/giphy.gif?cid=6c09b9523kuqddo3wfcj003jzzqmvzqegmzmrfjg5tf4ogdw&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=s" width= "300">
