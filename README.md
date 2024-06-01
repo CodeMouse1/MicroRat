@@ -56,7 +56,10 @@ Diese bereitgestellte Hardware stellt eine vereinfachte Version einer Micromouse
 
 Diese ausgelegten Pins bestehen aus 5 GPIOs, sowohl als auch einer UART und I²C Schnittstelle. Somit haben zukünftige Studenten die Möglichkeit je nach Anforderung die MicroRat zu erweitern.
 <div align="center">
-<img src="/uploads/869c0cd5c1217f0d39e69be85d5c1e8c/Microrat_v1_v2.png" alt="Microrat_Render2" width="350">
+<div style="display: flex;">
+  <img src="/uploads/869c0cd5c1217f0d39e69be85d5c1e8c/Microrat_v1_v2.png" alt="Microrat_Render2" style=" left; margin-right: 10px;">
+  <img src="/uploads/36126153ce8d252a3842e16bd54a2467/Microrat__1__2.png" alt="Microrat_PCB" style=" left;">
+</div>
 <div align="left">
 
 ## Anleitung?
