@@ -71,7 +71,7 @@ Dieses Projekt ist zur allgemeinen Nutzung freigegeben. Es gibt keine spezifisch
 ## Mitwirken
 Wir freuen uns auf eure Erweiterungen! Wenn du an diesem Projekt mitarbeiten möchtest, folge bitte diesen Schritten:
 
-1. **Fork dieses Repository**: Klicke oben rechts auf die Schaltfläche "Fork", um eine Kopie des Repositories in deinem GitHub-Konto zu erstellen.
+1. **Fork dieses Repository**: Klicke oben rechts auf die Schaltfläche "Fork", um eine Kopie des Repositories in deinem GitLab-Konto zu erstellen.
 
 2. **Clone das Forked Repository**: Klone dein geforktes Repository auf deinen lokalen Rechner.
     ```bash
@@ -94,7 +94,7 @@ Wir freuen uns auf eure Erweiterungen! Wenn du an diesem Projekt mitarbeiten mö
     git push origin mein-neuer-branch
     ```
 
-6. **Erstelle einen Pull Request**: Gehe zu deinem geforkten Repository auf GitHub und klicke auf die Schaltfläche "New Pull Request", um deine Änderungen zur Überprüfung einzureichen.
+6. **Erstelle einen Pull Request**: Gehe zu deinem geforkten Repository auf GitLab und klicke auf die Schaltfläche "New Pull Request", um deine Änderungen zur Überprüfung einzureichen.
 
 ## Kontaktinformationen
 Bei Fragen oder Problemen könnt Ihr uns gerne kontaktieren:
