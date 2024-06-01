@@ -9,7 +9,7 @@ Dieses Repository wurde im Rahmen der Fächer Verteilte Systeme und Steuergerät
 
 Wenn der Begriff einer Micromouse unbekannt ist findet man unter diesem Link ein Erläuterungsvideo:
 https://www.youtube.com/watch?v=ZMQbHMgK2rw
-***
+
 
 ## Technische Beschreibung
 Micromouse ist ein Robotikwettbewerb, in dem sich kleine, autonome Roboterfahrzeuge in einem Labyrinth zurechtfinden müssen. Die Micromouse-Roboterfahrzeuge sind vollständig autonom. Sie bewegen sich ohne Hilfe von außen durch das Labyrinth. Es ist dem Entwickler freigestellt, wie das Fahrzeug die Wände des Labyrinthes erkennt; verbreitet sind vorn am Fahrzeug angebrachte und schräg nach außen ausgerichtete Infrarot-Abstandssensoren. Unsere Micromouse soll als Einstieg in diese Thematik dienen.
@@ -28,7 +28,7 @@ Angesteuert wird das Kit über ein XMC-1402, der über ein Debug-Connector progr
 	<img src="https://image.futurezone.at/images/cfs_square_1232/7995559/micromouselabyrinthss.jpg" width= "300">
 <div align="center" > Dieses Bild stammt aus [futurezone](https://futurezone.at/digital-life/roboter-maus-micromouse-labyrinth-kuenstliche-intelligenz-nerf-gun-kurios-videos/402506761)
 
-***
+
 ## Verwendung von KiCad 8.0
 <div align="center">
 	<img src="https://avatars.githubusercontent.com/u/3374914?s=280&v=4" width= "50">
@@ -44,7 +44,7 @@ Für dieses Projekt haben wir KiCad 8.0 gewählt aus folgenden Gründen:
 
 Für eine grundlegende Einführung in KiCad bitte dieser Ratte folgen: [🐀](https://docs.kicad.org/)
 
-***
+
 ## Hardware
 Diese bereitgestellte Hardware stellt eine vereinfachte Version einer Micromouse dar, wie sie heutzutage häufig anzutreffen ist. Grund dafür ist, dass heutige Micromäuse stark optimiert sind, wie erwähnt soll diese als eine Einstiegsplattform in die Welt der autnonomen Pfadfindung und Robotik dienen.
 
