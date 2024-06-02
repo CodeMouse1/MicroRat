@@ -58,7 +58,7 @@ Diese ausgelegten Pins bestehen aus 5 GPIOs, sowohl als auch einer UART und I²C
 <div align="center">
 
 <p float="center">
-  <img src="/uploads/bf74777127c349fa86007dc492ed4637/_removal.ai__8c2d7579-b76e-41dc-b2b4-d0dd401914db-microrat3_DNO46E.png" width="600" />
+  <img src="/uploads/bf74777127c349fa86007dc492ed4637/_removal.ai__8c2d7579-b76e-41dc-b2b4-d0dd401914db-microrat3_DNO46E.png" width="550" />
   <img src="/uploads/52044ddf1023aa9465557396d21156f6/Microrat5-removebg.png" width="600" /> 
 </p>
 <div align="left">
