@@ -63,12 +63,25 @@ Diese ausgelegten Pins bestehen aus 5 GPIOs, sowohl als auch einer UART und I²C
 </p>
 <div align="left">
 
-## Anleitung?
+## Anleitung
+
+### Dave IDE 
+Marcus
+### KiCad
+Marcus
+### Fusion 360
+Nico
+### JLCPCB
+Nico
+
 
 ## Beispielanwendung
 
+Dave Code plus bilder/videos von Dave
+
 ## Lizenzinformationen
-Dieses Projekt ist zur allgemeinen Nutzung freigegeben. Es gibt keine spezifische Lizenz. Ihr könnt es nutzen, wie ihr möchtet.
+Dieses Projekt ist Lizensiert unter der CC 4.0 Lizenz
+https://creativecommons.org/licenses/by/4.0/
 
 ## Mitwirken
 Wir freuen uns auf eure Erweiterungen! Wenn du an diesem Projekt mitarbeiten möchtest, folge bitte diesen Schritten:
