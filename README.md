@@ -136,7 +136,7 @@ Sobald der Code fehlerfrei ist, könnt ihr ihn auf euren Mikrocontroller hochlad
 
 - Beginnt mit der APP Zuordnung und falls sich bestimmte APPs die gleiche CCU brauchen ist es besser alle auf die selbe zu packen statt einer neuen Instanz zu erstellen
 - Sobald Ihr neue Apps hinzufügt immer auf _Generate Code_ drücken
-- Wenn manche APPs unklar sind bietet die APP Help umfangreiche Hilfe von Überblick zu Beispiel Code
+- Wenn manche APPs unklar sind bietet die APP Help/APP Info umfangreiche Hilfe von Überblick zu Beispiel Code
 - Persöhnliche Microcontrollerempfehlung XMC 4700 RelaxKit
 
 Hier noch 2 Lins zu hilfreichen Dokumenten:
