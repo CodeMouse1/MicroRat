@@ -78,7 +78,7 @@ DAVE IDE (Digital Application Virtual Engineering Integrated Development Environ
 
 1. **Projektverwaltung:**
 
-DAVE IDE ermöglicht die einfache Erstellung und Verwaltung von Projekten. Wenn Sie auf _File_ oben rechts klicken können sie neue Projekte erstellen, bestehende Projekte importieren und Ihre Projekte in verschiedenen Konfigurationen verwalten.
+DAVE IDE ermöglicht die einfache Erstellung und Verwaltung von Projekten. Wenn Ihr auf _File_ oben rechts klicken könnt ihr neue Projekte erstellen, bestehende Projekte importieren und eure Projekte in verschiedenen Konfigurationen verwalten.
 
 2. **Code-Editor:**
 
@@ -86,24 +86,24 @@ Der integrierte Code-Editor unterstützt Syntax-Highlighting, Auto-Vervollständ
 
 3. **Debugging-Tools:**
 
-Die integrierten Debugging-Tools ermöglichen es Ihnen, Ihren Code in Echtzeit zu testen und Fehler zu beheben. Sie können Breakpoints setzen, den Code Schritt für Schritt durchlaufen und die Werte von Variablen überwachen. Um ihren Code zu debuggen einfach auf den 🪲 drücken.
+Die integrierten Debugging-Tools ermöglichen es euch, euren Code in Echtzeit zu testen und Fehler zu beheben. Ihr könnt Breakpoints setzen, den Code Schritt für Schritt durchlaufen und die Werte von Variablen überwachen. Um ihren Code zu debuggen einfach auf den 🪲 drücken.
 
 ##### Erste Schritte mit DAVE IDE
 **Installation:**
 
-Laden Sie die neueste Version von DAVE IDE von der offiziellen Website herunter und folgen Sie den Installationsanweisungen. Hier der Link: [⬇️](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.daveide)
+Ladet die neueste Version von DAVE IDE von der offiziellen Website herunter und folgen Sie den Installationsanweisungen. Hier der Link: [⬇️](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.daveide)
 
 **Erstellen eines neuen Projekts:**
 
-Starten Sie DAVE IDE und wählen Sie "Neues Projekt erstellen". Folgen Sie dem Assistenten, um ein Projekt für Ihren spezifischen Mikrocontroller zu konfigurieren. Hier muss der richtige Microcontroller ausgewählt werden.
+Startet DAVE IDE und wählt "Neues Projekt erstellen" aus. Folgt dem Assistenten, um ein Projekt für eure spezifischen Mikrocontroller zu konfigurieren. Hier muss der richtige Microcontroller ausgewählt werden.
 
 **Code schreiben:**
 
-Nutzen Sie den integrierten Code-Editor, um Ihren Anwendungscode zu schreiben. Sobald das erledigt ist muss man die nötigen APPs dem Prozessor zuweisen, dazu _Manual Pin Allocator_ klicken und anschließend auf _Generate Code_ drücken bevor ihr den Code auf _Build Code_ drückt. 
+Nutzen Sie den integrierten Code-Editor, um euren Anwendungscode zu schreiben. Sobald das erledigt ist muss man die nötigen APPs dem Prozessor zuweisen, dazu _Manual Pin Allocator_ klicken und anschließend auf _Generate Code_ drücken bevor ihr den Code auf _Build Code_ drückt. 
 
 **Debuggen und Testen:**
 
-Verwenden Sie die Debugging-Tools, um Ihren Code zu testen. Setzen Sie Breakpoints, um den Code Schritt für Schritt zu durchlaufen und die Funktionalität zu überprüfen.
+Verwenden Sie die Debugging-Tools, um euren Code zu testen. Setzt Breakpoints, um den Code Schritt für Schritt zu durchlaufen und die Funktionalität zu überprüfen.
 
 **Implementierung auf Hardware:**
 
