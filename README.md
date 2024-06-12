@@ -67,7 +67,59 @@ Hier ein Link zu einer 3D Ansicht: [3D-Modell](https://a360.co/3X1qUvD)
 ## Anleitung
 
 ### Dave IDE 
-Marcus
+<div align="center">
+	<img src="https://www.infineon.com/export/sites/default/media/products/Microcontrollers/devel_tools_SW/DAvE3.jpg_45004101.jpg" width= "50">
+<div align="left">
+
+##### Was ist DAVE IDE?
+DAVE IDE (Digital Application Virtual Engineering Integrated Development Environment) ist eine leistungsstarke und benutzerfreundliche Entwicklungsumgebung, die speziell für die Entwicklung von Software für Mikrocontroller und eingebettete Systeme entwickelt wurde. DAVE IDE unterstützt eine Vielzahl von Mikrocontrollern und bietet eine integrierte Plattform für die Programmierung, das Debugging und die Analyse von Embedded-Anwendungen.
+
+**Hauptfunktionen von DAVE IDE**
+
+1. **Projektverwaltung:**
+
+DAVE IDE ermöglicht die einfache Erstellung und Verwaltung von Projekten. Wenn Sie auf _File_ oben rechts klicken können sie neue Projekte erstellen, bestehende Projekte importieren und Ihre Projekte in verschiedenen Konfigurationen verwalten.
+
+2. **Code-Editor:**
+
+Der integrierte Code-Editor unterstützt Syntax-Highlighting, Auto-Vervollständigung und Fehlererkennung. Dies erleichtert das Schreiben und Verwalten von Code erheblich.
+
+3. **Debugging-Tools:**
+
+Die integrierten Debugging-Tools ermöglichen es Ihnen, Ihren Code in Echtzeit zu testen und Fehler zu beheben. Sie können Breakpoints setzen, den Code Schritt für Schritt durchlaufen und die Werte von Variablen überwachen. Um ihren Code zu debuggen einfach auf den 🪲 drücken.
+
+##### Erste Schritte mit DAVE IDE
+**Installation:**
+
+Laden Sie die neueste Version von DAVE IDE von der offiziellen Website herunter und folgen Sie den Installationsanweisungen. Hier der Link: [⬇️](https://softwaretools.infineon.com/tools/com.ifx.tb.tool.daveide)
+
+**Erstellen eines neuen Projekts:**
+
+Starten Sie DAVE IDE und wählen Sie "Neues Projekt erstellen". Folgen Sie dem Assistenten, um ein Projekt für Ihren spezifischen Mikrocontroller zu konfigurieren. Hier muss der richtige Microcontroller ausgewählt werden.
+
+**Code schreiben:**
+
+Nutzen Sie den integrierten Code-Editor, um Ihren Anwendungscode zu schreiben. Sobald das erledigt ist muss man die nötigen APPs dem Prozessor zuweisen, dazu _Manual Pin Allocator_ klicken und anschließend auf _Generate Code_ drücken bevor ihr den Code auf _Build Code_ drückt. 
+
+**Debuggen und Testen:**
+
+Verwenden Sie die Debugging-Tools, um Ihren Code zu testen. Setzen Sie Breakpoints, um den Code Schritt für Schritt zu durchlaufen und die Funktionalität zu überprüfen.
+
+**Implementierung auf Hardware:**
+
+Sobald der Code fehlerfrei ist, könnt ihr ihn auf euren Mikrocontroller hochladen und die Anwendung auf der tatsächlichen Hardware testen.
+
+**Tipps und Best Practices:**
+
+- Beginnt mit der APP Zuordnung und falls sich bestimmte APPs die gleiche CCU brauchen ist es besser alle auf die selbe zu packen statt einer neuen Instanz zu erstellen
+- Sobald Ihr neue Apps hinzufügt immer auf _Generate Code_ drücken
+- Wenn manche APPs unklar sind bietet die APP Help umfangreiche Hilfe von Überblick zu Beispiel Code
+- Persöhnliche Microcontrollerempfehlung XMC 4700 RelaxKit
+
+Hier noch 2 Lins zu hilfreichen Dokumenten:
+- [Introduction](https://www.infineon.com/dgdl/Infineon-DAVE_Introduction-DT-v01_00-EN.pdf?fileId=5546d462636cc8fb01645f681d4713ed)
+- [Quick Start](https://www.infineon.com/dgdl/DAVE+Quick+Start+PresentationTutorial+v2-1.pdf?fileId=db3a304344d727a80144d99976b2002b)
+
 ### KiCad
 Marcus
 ### Fusion 360
