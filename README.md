@@ -106,7 +106,7 @@ Hier ein Bsp Code für blinkende LED:
 
 #define ONESEC 1000000U     //definiere 1 sec
 
-uint8_t Timer_1s;	//Timer 1s
+uint8_t Timer_1s;	    //Timer 1s
 
 
 void Toggle_LED(void){
