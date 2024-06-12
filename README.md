@@ -102,11 +102,11 @@ Startet DAVE IDE und wählt "Neues Projekt erstellen" aus. Folgt dem Assistenten
 Nutzen Sie den integrierten Code-Editor, um euren Anwendungscode zu schreiben. Sobald das erledigt ist muss man die nötigen APPs dem Prozessor zuweisen, dazu _Manual Pin Allocator_ klicken und anschließend auf _Generate Code_ drücken bevor ihr den Code auf _Build Code_ drückt.
 Hier ein Bsp Code für blinkende LED:
 ```
-#include "DAVE.h"                 //Declarations from DAVE Code Generation (includes SFR declaration)
+#include "DAVE.h"           //Declarations from DAVE Code Generation (includes SFR declaration)
 
-#define ONESEC 1000000U			  //definiere 1 sec
+#define ONESEC 1000000U     //definiere 1 sec
 
-uint8_t Timer_1s;				  //Timer 1s
+uint8_t Timer_1s;		    //Timer 1s
 
 
 void Toggle_LED(void){
@@ -119,7 +119,7 @@ int main(void)
 	DAVE_Init();           /* Initialization of DAVE APPs  */
 	
 	Timer_1s = SYSTIMER_CreateTimer(ONESEC,SYSTIMER_MODE_PERIODIC,(void*)Toggle_LED,NULL);	//Init Timer 1s
-	SYSTIMER_StartTimer(Timer_1s);															//Starte Timer 1s
+	SYSTIMER_StartTimer(Timer_1s);	//Starte Timer 1s
 
 }
 ```
