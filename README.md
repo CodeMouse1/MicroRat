@@ -249,8 +249,76 @@ Hier sind Hilfreiche Links, um einen ausführlichen Einblick in Fusion 360 zu be
 
 ## Beispielanwendung
 
-Dave Code plus bilder/videos von Dave
+Der hier dargestellte Code ist im ZIP Ordner zu finden und soll ledeglich einen kurzen Überblick verschaffen.
+```
+#include "DAVE.h"
+#include "Dummy.h"
 
+int button_status = 0;
+
+
+int main(void)
+{
+	DAVE_Init();           /* Initialization of DAVE APPs  */
+	//Dummycode_Init();
+
+	while(true){
+	button_status = DIGITAL_IO_GetInput(&DIGITAL_IO_BUTTON);
+		if(button_status == 1){
+			Dummycode_Init();
+			button_status = 0;
+		}
+	}
+}
+```
+Die vorbereitete .main ist so aufgebaut das sobald der auf der MicroRat zu findende Knopf gedrückt wird unser Dummycode, auch Demo Programm genannt, automatisch abgespielt und liest alles Sensoren via UART aus. Als nächstes betrachten wir unsere vorbereitete Dummy.c File wo der eigentliche Funktionscode zu finden ist.
+```
+#include "Dave.h"
+#include "Dummy.h"
+#include <stdio.h>          // Für sprintf
+
+#define PERIODIC_READ 100000U
+
+uint8_t UART_String[100];   // Init APPs und Array
+uint32_t Timer_100ms;       // -||-
+uint32_t Capture_t;         // -||-
+
+XMC_VADC_RESULT_SIZE_t ADC_Wert_IR_L;   // Variablen zur  Speicherung der ADC-Ergebnisse
+XMC_VADC_RESULT_SIZE_t ADC_Wert_IR_R;
+
+float captured_time_us;     // Variable für den Ultraschallsensor
+float distanz_ultra;        // -||-
+int IR_L, IR_R;
+
+void Sensoren_Auslesen_100ms(void){ //Alle 100ms aufgerufen
+	//IR
+	ADC_Wert_IR_R = ADC_MEASUREMENT_GetResult(&ADC_MEASUREMENT_Channel_A);  // Holt neuen ADC Wert des IR Sensors
+	ADC_Wert_IR_L = ADC_MEASUREMENT_GetResult(&ADC_MEASUREMENT_Channel_B);  // -||-
+	IR_R = ADC_Wert_IR_R;
+	IR_L = ADC_Wert_IR_L;
+	//ULTRASCHALL
+	CAPTURE_GetCapturedTime(&CAPTURE_ULTRA, &Capture_t);    // Berechnung der Distanz mehr Info dazu in der Doku
+	captured_time_us = ((float)Capture_t * 333.33)/1000;
+	distanz_ultra = captured_time_us /58;   
+	//DREZAHL
+
+	//UART-Transmit
+	sprintf((char*)UART_String,	" Ultraschall: %.2fcm   // Formatierung der Sensordaten in eine Zeichenkette
+        IR_R: %d IR_L: %d\n\r", distanz_ultra, IR_R, IR_L);
+	UART_Transmit(&UART_COM, UART_String, sizeof(UART_String));
+
+	DIGITAL_IO_ToggleOutput(&DIGITAL_IO_AUGE_1);    // LED blinken
+	DIGITAL_IO_ToggleOutput(&DIGITAL_IO_AUGE_2);    // -||-
+
+}
+
+void Dummycode_Init(void)
+{
+	Timer_100ms = SYSTIMER_CreateTimer(PERIODIC_READ,SYSTIMER_MODE_PERIODIC,(void*)Sensoren_Auslesen_100ms,NULL);   // Deklaration des periodischen Timers
+	SYSTIMER_StartTimer(Timer_100ms);   // Start
+}
+
+```
 ## Lizenzinformationen
 Dieses Projekt ist Lizensiert unter der CC 4.0 Lizenz
 https://creativecommons.org/licenses/by/4.0/
