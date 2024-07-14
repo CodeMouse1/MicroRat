@@ -146,9 +146,50 @@ Hier noch 2 Lins zu hilfreichen Dokumenten:
 ### KiCad
 Marcus
 ### Fusion 360
-Nico
+
+##### Was ist Fusion 360?
+
+Fusion 360 ist eine cloudbasierte 3D-CAD-, CAM- und CAE-Software, die von Autodesk entwickelt wurde. Sie bietet umfassende Werkzeuge für das Entwerfen, Testen und Fertigen von Produkten. Die Software ermöglicht parametrische Modellierung, direkte Modellierung, Freiformmodellierung und Netzbearbeitung, wodurch Benutzer präzise und flexible Designs erstellen können. Darüber hinaus bietet Fusion 360 Funktionen für Simulationen und Generative Design, um die Leistung von Produkten zu testen und innovative Lösungen zu finden. Dank der Cloud-Integration können Teams in Echtzeit zusammenarbeiten und Daten sicher speichern.
+
+#### Hauptfunktionen von Fusion 360
+
+1. **3D-CAD-Modellierung:**
+
+Parametrische Modellierung: Erstellung von präzisen, regelbasierten Modellen.
+Direkte Modellierung: Bearbeiten und Anpassen von Geometrien ohne Historie.
+Freiformmodellierung: Erstellen und Bearbeiten von organischen und komplexen Formen.
+Netzbearbeitung: Arbeiten mit 3D-Scans und Mesh-Daten.
+
+2. **CAM (Computer-Aided Manufacturing):**
+
+Werkzeugpfad-Generierung: Erstellung von Werkzeugwegen für CNC-Bearbeitungen.
+2.5D-, 3D-, 4- und 5-Achsen-Bearbeitung: Unterstützung verschiedener Bearbeitungsprozesse.
+Bearbeitungssimulation: Virtuelles Testen der Bearbeitungsprozesse zur Fehlervermeidung.
+
+3. **CAE (Computer-Aided Engineering):**
+
+Simulationen: Durchführung von Finite-Elemente-Analysen (FEA) für strukturelle, thermische und modale Analysen.
+Generatives Design: Automatisiertes Erzeugen von Design-Alternativen basierend auf definierten Anforderungen und Einschränkungen.
+
+4. **Zusammenarbeit und Datenmanagement:**
+
+Cloud-Integration: Echtzeit-Zusammenarbeit und Datenspeicherung in der Cloud.
+Versionskontrolle: Verwalten von Designänderungen und Versionsverläufen.
+
+5. **Rendering und Animation:**
+
+Fotorealistisches Rendering: Erstellen von hochwertigen Bildern und Animationen zur Visualisierung von Designs.
+Animationswerkzeuge: Erstellen von Bewegungssimulationen und interaktiven Präsentationen.
+
+##### Erste Schritte mit Fusion 360
+
+
+
 ### JLCPCB
-Nico
+
+
+
+
 
 
 ## Beispielanwendung
