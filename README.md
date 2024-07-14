@@ -242,10 +242,47 @@ Hier sind Hilfreiche Links, um einen ausführlichen Einblick in Fusion 360 zu be
 
 ### JLCPCB
 
+**Was ist JLCPCB?**
 
+JLCPCB ist ein führender chinesischer Anbieter von Leiterplatten (Printed Circuit Boards, PCBs) und elektronischen Dienstleistungen. Das Unternehmen bietet eine breite Palette von Dienstleistungen und Produkten für die Herstellung von Leiterplatten an. Hier sind einige der Hauptmerkmale und Dienstleistungen von JLCPCB:
 
+1. **Leiterplattenherstellung:**
 
+Prototypen und Massenproduktion: Herstellung von kleinen und großen Mengen an PCBs.
+Verschiedene PCB-Typen: Ein- und mehrschichtige Leiterplatten, flexible PCBs, starr-flexible PCBs und Aluminium-PCBs.
+Schnelle Lieferzeiten: Express-Service für schnelle Produktion und Lieferung.
 
+2. **PCB-Design und Anpassung:**
+
+Kundenspezifische Designs: Anpassung der PCBs an spezifische Anforderungen und Spezifikationen.
+Design for Manufacturing (DFM) Unterstützung: Hilfe bei der Optimierung von Designs für die Produktion.
+
+3. **Zusatzleistungen:**
+
+SMD-Stencil: Bereitstellung von Schablonen für die SMD-Bestückung.
+Bauteilbeschaffung: Unterstützung bei der Beschaffung von elektronischen Bauteilen.
+PCB-Montage: Komplettmontage der Leiterplatten einschließlich Bestückung der Bauteile.
+
+4. **Benutzerfreundliche Online-Plattform:**
+
+Einfacher Bestellprozess: Benutzerfreundliche Online-Bestellplattform mit Preisangeboten in Echtzeit.
+Datei-Uploads: Unterstützung für das Hochladen von Gerber-Dateien und anderen Design-Daten.
+Online-Tracking: Verfolgung des Produktionsstatus und der Lieferung in Echtzeit.
+
+5. **Qualitätskontrolle:**
+
+Strenge Inspektionen: Umfassende Qualitätskontrollprozesse, einschließlich elektrischer Tests und optischer Inspektionen.
+Zertifizierungen: Erfüllung internationaler Qualitätsstandards und Zertifizierungen wie ISO 9001.
+
+JLCPCB ist bekannt für seine kostengünstigen und zuverlässigen Dienstleistungen und wird häufig von Hobbyisten, Start-ups und etablierten Unternehmen in der Elektronikindustrie genutzt.
+
+**Unser Anwendungsfall**
+
+Wir haben diesen Service genutzt, um günstig unsere Platinen drucken zu lassen.  
+
+**Links**
+
+- [Guide](https://jlcpcb.com/blog/183-the-ultimate-guide-to-pcba)
 
 ## Beispielanwendung
 
