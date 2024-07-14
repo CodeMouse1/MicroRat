@@ -144,7 +144,41 @@ Hier noch 2 Lins zu hilfreichen Dokumenten:
 - [Quick Start](https://www.infineon.com/dgdl/DAVE+Quick+Start+PresentationTutorial+v2-1.pdf?fileId=db3a304344d727a80144d99976b2002b)
 
 ### KiCad
-Marcus
+
+<div align="center">
+	<img src="https://avatars.githubusercontent.com/u/3374914?s=280&v=4" width= "50">
+<div align="left">
+
+##### Warum KiCAD?
+
+Für dieses Projekt haben wir uns entschieden, KiCAD als unser EDA-Tool (Electronic Design Automation) zu verwenden. KiCAD bietet eine Vielzahl von Vorteilen, die es zu einer ausgezeichneten Wahl für die Entwicklung von Leiterplatten (PCBs) machen:
+
+##### Open-Source und Kostenfrei
+KiCAD ist ein Open-Source-Tool, das kostenfrei verfügbar ist. Dies ermöglicht es jedem, das Programm ohne finanzielle Hürden zu nutzen und von einer großen Community unterstützt zu werden.
+
+##### Leistungsstarke Funktionen
+KiCAD bietet eine umfangreiche Palette an Funktionen, die den gesamten PCB-Design-Prozess abdecken:
+- **Schematic Capture**: Leistungsfähige und benutzerfreundliche Tools zur Erstellung und Bearbeitung von Schaltplänen.
+- **PCB Layout**: Umfassende Layout-Tools, die komplexe Designs ermöglichen, einschließlich Unterstützung für mehrere Lagen und hochauflösende Darstellungen.
+- **3D Viewer**: Ein integrierter 3D-Viewer, der es ermöglicht, das fertige PCB-Design in einer dreidimensionalen Ansicht zu betrachten und zu überprüfen.
+
+##### Bibliotheken und Bauteildatenbank
+KiCAD verfügt über eine umfangreiche Bibliothek von Bauteilen und Symbolen, die ständig aktualisiert und erweitert wird. Zusätzlich können Benutzer eigene Bauteile und Symbole erstellen und hinzufügen. Für die Erstellung eigener Symbole und Footprints hilft dieses Video:[🎥](https://www.youtube.com/watch?v=1V23NaExcg0) 
+
+##### Flexibilität und Anpassbarkeit
+Durch die Open-Source-Natur von KiCAD ist das Tool sehr flexibel und anpassbar. Benutzer können Plugins und Skripte erstellen, um den Funktionsumfang zu erweitern und an ihre spezifischen Bedürfnisse anzupassen.
+
+##### Plattformübergreifend
+KiCAD ist plattformübergreifend verfügbar und läuft auf Windows, macOS und Linux. Dies ermöglicht eine konsistente Benutzererfahrung unabhängig vom Betriebssystem.
+
+### Unterstützung durch eine aktive Community
+KiCAD wird von einer aktiven und engagierten Community unterstützt. Dies bedeutet, dass es eine Fülle von Ressourcen, Tutorials und Foren gibt, in denen Benutzer Hilfe und Unterstützung finden können.
+
+### Regelmäßige Updates
+Das Entwicklerteam hinter KiCAD veröffentlicht regelmäßig Updates und neue Versionen, die Fehlerbehebungen und neue Funktionen beinhalten. Dies gewährleistet, dass das Tool stets auf dem neuesten Stand der Technik bleibt.
+
+Weitere Informationen zu KiCAD findest du auf der [offiziellen Webseite](https://www.kicad.org/).
+
 ### Fusion 360
 
 <div align="center">
