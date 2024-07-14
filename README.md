@@ -147,6 +147,10 @@ Hier noch 2 Lins zu hilfreichen Dokumenten:
 Marcus
 ### Fusion 360
 
+<div align="center">
+	<img src="https://damassets.autodesk.net/content/dam/autodesk/www/product-imagery/badge-75x75/simplified-badges/fusion-360-product-design-extension-2023-simplified-badge-75x75.png" width= "50">
+<div align="left">
+
 ##### Was ist Fusion 360?
 
 Fusion 360 ist eine cloudbasierte 3D-CAD-, CAM- und CAE-Software, die von Autodesk entwickelt wurde. Sie bietet umfassende Werkzeuge für das Entwerfen, Testen und Fertigen von Produkten. Die Software ermöglicht parametrische Modellierung, direkte Modellierung, Freiformmodellierung und Netzbearbeitung, wodurch Benutzer präzise und flexible Designs erstellen können. Darüber hinaus bietet Fusion 360 Funktionen für Simulationen und Generative Design, um die Leistung von Produkten zu testen und innovative Lösungen zu finden. Dank der Cloud-Integration können Teams in Echtzeit zusammenarbeiten und Daten sicher speichern.
@@ -183,7 +187,24 @@ Animationswerkzeuge: Erstellen von Bewegungssimulationen und interaktiven Präse
 
 ##### Erste Schritte mit Fusion 360
 
+**Installation:**
 
+Ein Guide zum Installieren der Fusion 360 Umgebung finden Sie im folgenden Link: [⬇️](https://www.autodesk.de/support/technical/article/caas/sfdcarticles/sfdcarticles/DEU/How-does-Fusion-360-get-installed.html)
+
+**Erstellen einer neuen Konstruktion:**
+
+Um eine neue Konstruktion zu erstellen, kann über der oberen Leiste Rechts das Plussymbol angeklickt werden. Alle Werkzeuge zum erstellen eines 3D-Objektes befinden unterhalb der oberen Leiste.
+
+**Export:**
+
+Wenn das erstellte Modell fertig ist, kann man über den Reiter "Dienstprogramme" eine Datei für z.B. einen 3D-Drucker erstellt werden. 
+
+**Hilfreiche Links**
+
+Hier sind Hilfreiche Links, um einen ausführlichen Einblick in Fusion 360 zu bekommen: 
+
+- [Fundamentals](https://help.autodesk.com/view/fusion360/ENU/courses/)
+- [Guides](https://help.autodesk.com/view/fusion360/ENU/?guid=GUID-670346CA-4CF8-4009-9E9B-09FCC6803B61)
 
 ### JLCPCB
 
