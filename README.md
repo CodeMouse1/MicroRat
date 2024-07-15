@@ -356,6 +356,12 @@ void Dummycode_Init(void)
 }
 
 ```
+**Mazegenerator**
+<div align="center">
+	<img src="https://codebox.net/assets/images/maze-generator/maze_square.svg" width= "50">
+<div align="left">
+Für eine einfache und direkte Erstellung eines Labyrinthes, empfehlen wir diese Webseite: [MazeGenerator](https://codebox.net/pages/maze-generator/online)
+
 ## Lizenzinformationen
 Dieses Projekt ist Lizensiert unter der CC 4.0 Lizenz
 https://creativecommons.org/licenses/by/4.0/
