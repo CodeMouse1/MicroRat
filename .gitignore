@@ -12,6 +12,7 @@ Release/
 *.o
 *.elf
 *.map
+*.bak
 
 # Auto-generierte oder systemnahe Dateien
 MicroRatFinal/Dave/
