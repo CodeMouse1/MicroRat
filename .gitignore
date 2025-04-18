@@ -1,0 +1,22 @@
+# Ignore build directories
+/Release/
+/Debug/
+
+# Ignore object files and compiled binaries
+*.o
+*.d
+*.elf
+*.hex
+*.lst
+*.map
+
+# Ignore IDE metadata and project files
+.metadata/
+*.launch
+*.cproject
+*.project
+
+# Ignore any backup or temporary files
+*.bak
+*.swp
+*~
