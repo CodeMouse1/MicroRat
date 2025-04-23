@@ -6,6 +6,7 @@
  */
 #include "Dave.h"
 #include <stdio.h>
+/*
 
 #define PERIODIC_READ 50000U
 
@@ -47,5 +48,5 @@ void Sensoren_Init(){
 	Timer_50ms = SYSTIMER_CreateTimer(PERIODIC_READ,SYSTIMER_MODE_PERIODIC,(void*)Sensoren_Auslesen_50ms,NULL);
 	SYSTIMER_StartTimer(Timer_50ms);
 }
-
+*/
 

@@ -1,6 +1,6 @@
 #include "Dave.h"
 #include <stdio.h>
-
+/*
 #define TARGET_PWM 2500             // Ziel PWM-Wert
 #define PWM_MAX 3000                // Maximaler PWM-Wert (60%)
 #define PWM_MIN 0                   // Minimaler PWM-Wert
@@ -17,9 +17,9 @@ volatile int counter_L = 0;         // Encoder-Ticks für linkes Rad
 volatile float last_error_speed = 0; // Für D-Anteil
 
 uint8_t UART_String[100];
-
+*/
 // Funktion für die PID-Regelung (PD-Regler)
-void PID_SR() {
+/*void PID_SR() {
     counter_R = COUNTER_GetCurrentCount(&COUNTER_R);  // Rechtes Rad
     counter_L = COUNTER_GetCurrentCount(&COUNTER_L);  // Linkes Rad
 
@@ -66,3 +66,5 @@ void PID_SR() {
     counter_L = 0;
     counter_R = 0;
 }
+*/
+
