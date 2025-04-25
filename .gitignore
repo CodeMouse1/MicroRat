@@ -22,12 +22,6 @@ MicroRatFinal/Startup/
 MicroRatFinal/solver.log
 MicroRatFinal/linker_script.ld
 
-# Optional, falls nicht selbst editiert:
-MicroRatFinal/Motor.*
-MicroRatFinal/PID.*
-MicroRatFinal/Sensoren.*
-MicroRatFinal/UART.*
-
 # Erlaube eigene Quellordner explizit (überschreibt ignorieren nicht, dient nur zur Klarheit)
 !MicroRatFinal/Applikation/
 !MicroRatFinal/Funktionsschnittstellen/
