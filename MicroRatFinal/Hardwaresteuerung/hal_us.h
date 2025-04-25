@@ -10,4 +10,6 @@
 
 float FrontRead(void);
 
+void UltrasoundStart(void);
+
 #endif /* HARDWARESTEUERUNG_HAL_US_H_ */

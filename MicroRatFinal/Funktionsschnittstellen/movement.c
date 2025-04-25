@@ -6,13 +6,14 @@
  */
 #include "Dave.h"
 #include "Funktionsschnittstellen/movement.h"
+#include "Funktionsschnittstellen/sensors.h"
+#include "Funktionsschnittstellen/start_condition.h"
 #include "Hardwaresteuerung/hal_motor.h"
 #include "Hardwaresteuerung/hal_encoder.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TICKS_90_DEGREE  150
-#define TICKS_180_DEGREE (2 * TICKS_90_DEGREE)
+uint8_t UART_String[100];
 
 #define TARGET_PWM 2500             // Ziel PWM-Wert
 #define PWM_MAX 3000                // Maximaler PWM-Wert (60%)
@@ -29,9 +30,12 @@ volatile int counter_R = 0;         // Encoder-Ticks für rechtes Rad
 volatile int counter_L = 0;         // Encoder-Ticks für linkes Rad
 volatile float last_error_speed = 0; // Für D-Anteil
 
-void PID_SR() {
-    counter_R = Encoder_Read_Right();
-    counter_L = Encoder_Read_Left();
+void DrivePD() {
+
+	MotorsSetForward();
+
+    counter_R = EncoderReadRight();
+    counter_L = EncoderReadLeft();
 
     // Fehler berechnen
     float error_speed = counter_L - counter_R;
@@ -43,10 +47,10 @@ void PID_SR() {
     // PD-Korrektur berechnen
     float correction_speed = KP_SPEED * error_speed + KD_SPEED * d_error_speed;
 
-    /*// Korrektur begrenzen
+    // Korrektur begrenzen
     if (correction_speed > 300) correction_speed = 300;
     if (correction_speed < -300) correction_speed = -300;
-*/
+
     // PWM-Werte berechnen
     int pwmL = TARGET_PWM - correction_speed;
     int pwmR = TARGET_PWM + correction_speed;
@@ -59,41 +63,46 @@ void PID_SR() {
     MotorsSetSpeed(pwmL, pwmR);
 
     // Debug-Ausgabe über UART
-    //sprintf((char*)UART_String, " PWM_L: %d PWM_R: %d || count_L: %d count_R: %d\n\r", pwmL, pwmR, counter_L, counter_R);
-    //UART_Transmit(&UART_COM, UART_String, sizeof(UART_String));
+   /* sprintf((char*)UART_String, " PWM_L: %d PWM_R: %d || count_L: %d count_R: %d\n\r", pwmL, pwmR, counter_L, counter_R);
+    UART_Transmit(&UART_COM, UART_String, sizeof(UART_String));*/
 }
 
 void MovementInit(){
 	MotorsSetForward();
 }
 
-void Turn(TurnDirection dir){
-	int target_ticks = 0;
-	switch(dir) {
-		case left:
-			MotorsSetLeft();
-			target_ticks = TICKS_90_DEGREE;
-			break;
-		case right:
-			MotorsSetRight();
-			target_ticks = TICKS_90_DEGREE; // Rechtsdrehung
-			break;
-		case around:
-			MotorsSetRight();
-			target_ticks = TICKS_180_DEGREE;
-			break;
-	}
-	EncoderReset();
-	StartDrive();
-	int current_ticks = 0;
-	    // Warten, bis die Drehung abgeschlossen ist
-	    while (current_ticks < target_ticks) {
-	        current_ticks = (Encoder_Read_Left() + Encoder_Read_Right()) / 2;  // Durchschnitt der Encoderwerte
-	    }
-	Stop();
+void Turn(TurnDirection dir) {
+    int duration_ms = 0;
+
+    switch(dir) {
+        case left:
+            MotorsSetLeft();
+            duration_ms = 385;  // Zeit für 90°
+            break;
+        case right:
+            MotorsSetRight();
+            duration_ms = 300;  // Zeit für 90°
+            break;
+        case around:
+            MotorsSetRight();
+            duration_ms = 625;  // Zeit für 180°
+            break;
+    }
+    MotorsSetSpeed(3000, 3000);  // 30% PWM für konstante Geschwindigkeit
+    Delay(duration_ms);  // Alternativ: Einfacher Delay, bis die Zeit vorbei ist
+    if(dir == left){
+        MotorsSetRight();
+    }else{
+        MotorsSetLeft();
+    }
+	Delay(50);
+    MotorsStop();
+    EncoderReset();	//Unklar ob nötig muss getestet werden
 }
 
 void Stop(){
+	MotorsSetReverse();
+	Delay(100);
 	MotorsStop();
 }
 

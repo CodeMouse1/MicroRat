@@ -5,6 +5,7 @@
  *      Author: marcu
  */
 #include "Dave.h"
+#include "Hardwaresteuerung/hal_motor.h"
 
 void MotorsSetForward(){
 	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_1);
@@ -24,13 +25,21 @@ void MotorsSetRight(){
 	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_3);
 	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_4);
 }
+void MotorsSetReverse(){
+	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_1);
+	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_2);
+	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_3);
+	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_4);
+}
+
 void MotorsStop(){
 	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_1);
 	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_2);
 	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_3);
 	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_4);
 }
-void StartDrive(){
+
+void MotorsDrive(){
 	PWM_SetDutyCycle(&PWM_R, 3000);
 	PWM_SetDutyCycle(&PWM_L, 3000);
 	PWM_Start(&PWM_R);
@@ -40,4 +49,6 @@ void StartDrive(){
 void MotorsSetSpeed(int left, int right){
 	PWM_SetDutyCycle(&PWM_L, left);
 	PWM_SetDutyCycle(&PWM_R, right);
+	PWM_Start(&PWM_R);
+	PWM_Start(&PWM_L);
 }

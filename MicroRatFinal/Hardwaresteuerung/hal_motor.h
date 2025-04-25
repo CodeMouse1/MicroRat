@@ -11,8 +11,9 @@
 void MotorsSetForward(void);
 void MotorsSetRight(void);
 void MotorsSetLeft(void);
+void MotorsSetReverse(void);
 void MotorsSetSpeed(int left, int right);
 void MotorsStop(void);
-void StartDrive(void);
+void MotorsDrive(void);
 
 #endif /* HARDWARESTEUERUNG_HAL_MOTOR_H_ */

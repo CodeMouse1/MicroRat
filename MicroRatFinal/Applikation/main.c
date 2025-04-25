@@ -1,12 +1,8 @@
 #include "DAVE.h"
-
+#include "Applikation/pathfinding.h"
 #include "Funktionsschnittstellen/start_condition.h"
 #include "Funktionsschnittstellen/movement.h"
 #include "Funktionsschnittstellen/sensors.h"
-//#include "Motor.h"
-//#include "Sensoren.h"
-#include "UART.h"
-#include "PID.h"
 
 int main(void)
 {
@@ -15,9 +11,17 @@ int main(void)
 	SensorsInit();	  			   	/* Sensoren kalibriert und initialisiert */
 	WaitForStart();
 
+
 	while(true){
+		DebugPrint();
+		DrivePD();
+		if(GetDistanceTravelled() >= 30.0){
+				Stop();
+				break;
+			}
+		//DrivePD();
 		//wallfollower();
-		UART_Send();
+
 	}
 }
 

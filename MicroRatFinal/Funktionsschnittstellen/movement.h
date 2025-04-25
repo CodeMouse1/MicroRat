@@ -14,8 +14,9 @@ typedef enum {
 	around
 } TurnDirection;
 
-void MovementInit();
+void MovementInit(void);
+void DrivePD(void);
 void Turn(TurnDirection dir);
-void Stop();
+void Stop(void);
 
 #endif /* FUNKTIONSSCHNITTSTELLEN_MOVEMENT_H_ */

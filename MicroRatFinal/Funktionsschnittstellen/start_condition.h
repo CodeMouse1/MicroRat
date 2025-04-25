@@ -11,4 +11,6 @@
 void WaitForStart(void);
 void StartButton(void);
 
+void Delay(int delay_ms);
+
 #endif /* FUNKTIONSSCHNITTSTELLEN_START_CONDITION_H_ */
