@@ -8,6 +8,13 @@
 #ifndef APPLIKATION_PATHFINDING_H_
 #define APPLIKATION_PATHFINDING_H_
 
-void wallfollower(void);
+typedef enum {
+    WALLFOLLOW_RIGHT,
+    WALLFOLLOW_LEFT
+} WallfollowMode;
+
+void wallfollower(WallfollowMode mode);
+void floodfill(void);
+void TargetReached(void);
 
 #endif /* APPLIKATION_PATHFINDING_H_ */

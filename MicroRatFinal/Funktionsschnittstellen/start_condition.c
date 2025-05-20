@@ -6,17 +6,19 @@
  */
 #include "DAVE.h"
 #include "Funktionsschnittstellen/start_condition.h"
+#include "Funktionsschnittstellen/sensors.h"
 #include "Hardwaresteuerung/hal_startbutton.h"
 #include "Hardwaresteuerung/hal_motor.h"
 
 static bool button_pressed = false;
 static bool start = false;
 
+
 void WaitForStart() {
     while (true) {
         if (HAL_IsStartButtonPressed() && !button_pressed) {
             button_pressed = true;
-            HAL_StartStartDelay();
+            HAL_StartStartDelay(5000000);
         }
         if (start) {
             break;
@@ -25,11 +27,15 @@ void WaitForStart() {
 }
 
 void StartButton(){
-	start = true;
-	HAL_ClearStartDelayEvent();
-	HAL_StopStartDelay();
-	MotorsSetForward();
-	MotorsDrive();
+	if(start == false){
+		start = true;
+		HAL_ClearStartDelayEvent();
+		HAL_StopStartDelay();
+		MotorsSetForward();
+
+		TIMER_Start(&TIMER_REGLER);
+	}
+
 }
 
 void Delay(int delay_ms){

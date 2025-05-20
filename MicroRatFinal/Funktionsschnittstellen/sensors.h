@@ -21,6 +21,5 @@ int GetEncoderLeft(void);
 int GetEncoderRight(void);
 
 float GetUltraschall(void);
-float GetDistanceTravelled(void);
 
 #endif /* FUNKTIONSSCHNITTSTELLEN_SENSORS_H_ */

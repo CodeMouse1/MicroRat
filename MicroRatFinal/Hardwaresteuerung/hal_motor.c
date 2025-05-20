@@ -49,6 +49,4 @@ void MotorsDrive(){
 void MotorsSetSpeed(int left, int right){
 	PWM_SetDutyCycle(&PWM_L, left);
 	PWM_SetDutyCycle(&PWM_R, right);
-	PWM_Start(&PWM_R);
-	PWM_Start(&PWM_L);
 }
