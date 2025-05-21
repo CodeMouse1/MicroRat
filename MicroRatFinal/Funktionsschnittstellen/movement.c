@@ -1,28 +1,11 @@
-
+#include <stdio.h>
+#include <stdlib.h>
 #include "Dave.h"
 #include "Funktionsschnittstellen/movement.h"
 #include "Funktionsschnittstellen/sensors.h"
-#include "Funktionsschnittstellen/start_condition.h"
+#include "Funktionsschnittstellen/PD.h"
 #include "Hardwaresteuerung/hal_motor.h"
 #include "Hardwaresteuerung/hal_encoder.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-#define LOG_SIZE 100
-
-typedef struct {
-    int pwmL;
-    int pwmR;
-    int counter_L;
-	int counter_R;
-    float distanceError_L;
-    float distanceError_R;
-    float angleError;
-} LogEntry;
-
-LogEntry logBuffer[LOG_SIZE];
-uint8_t UART_String[100];
-uint8_t logIndex = 0;
 
 
 #define PWM_MAX 3250//3500
@@ -53,8 +36,6 @@ volatile int isTurning = 0;
 void ControllerHandler(){
 	UpdatePID();
 }
-
-//#define KP_ANGLE_TURN 20.85//20.5 war gut aber noch zu schwach
 
 #define KP_ANGLE_TURN_BASE 18.5//20//.35
 #define KP_ANGLE_TURN_BOOST 500

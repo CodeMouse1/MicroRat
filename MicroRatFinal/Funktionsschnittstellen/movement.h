@@ -20,15 +20,11 @@ void UpdatePID(void);
 void ResetPID(void);
 void setPIDGoalD(int distance);
 void setPIDGoalA(int angle);
-void move(int n);
-void turn(TurnDirection direction);
 int PIDdone(void);
 int PIDdoneTurn(void);
 
-void Turn(TurnDirection dir);
-void Stop(void);
-void MoveOneCell(void);
-
+void move(int n);
+void turn(TurnDirection direction);
 void RecalibrateAndMoveForward(void);
 
 #endif /* FUNKTIONSSCHNITTSTELLEN_MOVEMENT_H_ */

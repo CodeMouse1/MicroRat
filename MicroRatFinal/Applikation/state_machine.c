@@ -10,7 +10,6 @@
 #include "Applikation/pathfinding.h"
 #include "Applikation/maze.h"
 #include "Applikation/state_machine.h"
-#include "Funktionsschnittstellen/start_condition.h"
 #include "Funktionsschnittstellen/movement.h"
 #include "Funktionsschnittstellen/sensors.h"
 #include "Hardwaresteuerung/hal_encoder.h"
@@ -38,7 +37,6 @@ void RatStateMachine_Update(void) {
                 currentOrientation = EAST;
                 MazeMap_Init(); // Karte zurücksetzen
                 updateMazeMap(currentX, currentY, currentOrientation);
-                //printMazeMap();
             }
             break;
         case STATE_EXPLORE:
@@ -68,7 +66,6 @@ void RatStateMachine_Update(void) {
 				currentOrientation = EAST;
 				MazeMap_Init();
 				updateMazeMap(currentX, currentY, currentOrientation);
-				//printMazeMap(); // Entfernt, um es optional zu machen
 				targetReachedDone = false; // Zurücksetzen für den nächsten Durchlauf
 				reportSent = false;
 			}
@@ -78,18 +75,12 @@ void RatStateMachine_Update(void) {
 
 // Funktion für die UART-Berichterstattung
 void sendReportViaUART() {
-    uint8_t reportString[200];
-    sprintf((char*)reportString, "Ziel erreicht! Position: X=%d, Y=%d, Orientierung: %d\r\n", currentX, currentY, currentOrientation);
-    UART_Transmit(&UART_COM, reportString, strlen((char*)reportString));
     printMazeMap();
 }
 
-// Überprüft, ob der Startknopf gedrückt wurde (muss noch implementiert werden)
+// Überprüft, ob der Startknopf gedrückt wurde
 bool IsStartButtonPressed() {
-    // Hier muss die Logik für die Abfrage des Startknopfs implementiert werden.
-    // Das hängt von der spezifischen Hardware ab (z.B. digitaler Eingang).
-    //  Rückgabe: true, wenn der Knopf gedrückt ist, false sonst.
-    return DIGITAL_IO_GetInput(&DIGITAL_IO_BUTTON);  //Anpassen an deinen Start Button
+    return DIGITAL_IO_GetInput(&DIGITAL_IO_BUTTON);
 }
 
 void TargetReached() {

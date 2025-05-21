@@ -15,6 +15,5 @@ typedef enum {
 
 void wallfollower(WallfollowMode mode);
 void floodfill(void);
-void TargetReached(void);
 
 #endif /* APPLIKATION_PATHFINDING_H_ */

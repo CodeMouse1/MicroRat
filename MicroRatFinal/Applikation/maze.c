@@ -23,12 +23,10 @@ void MazeMap_Init(void) {
             mazeMap[y][x] = 0; // Initialisiere alle Zellen als "keine Wände bekannt"
         }
     }
-    // Optional: Markiere die Startzelle als besucht (z.B., indem du ein Bit setzt)
 }
 
 void updateMazeMap(int currentX, int currentY, int currentOrientation) {
     int cellInfo = mazeMap[currentY][currentX];
-    // Annahme: IsWallFront(), IsWallLeft(), IsWallRight() sind in sensors.h deklariert
     bool frontWall = IsWallFront();
     bool leftWall = IsWallLeft();
     bool rightWall = IsWallRight();
@@ -72,33 +70,12 @@ void updateMazeMap(int currentX, int currentY, int currentOrientation) {
 }
 
 void printMazeMap(void) {
-	/*UART_Transmit(&UART_COM, (uint8_t*)"Labyrinth Karte:\n\r", sizeof("Labyrinth Karte:\n\r") - 1);
-
-	for (int y = 0; y < MAZE_HEIGHT; y++) {
-
-	for (int x = 0; x < MAZE_WIDTH; x++) {
-
-	sprintf((char*)UART_MapString, "[%d][%d]: %d ", y, x, mazeMap[y][x]);
-
-	UART_Transmit(&UART_COM, UART_MapString, strlen((char*)UART_MapString)); // Wichtig: strlen verwenden
-
-	}
-
-	UART_Transmit(&UART_COM, (uint8_t*)"\n\r", sizeof("\n\r") - 1); // Zeilenumbruch am Ende jeder Zeile
-
-	}*/
-
 	UART_Transmit(&UART_COM, (uint8_t*)"Labyrinth Karte:\n\r", sizeof("Labyrinth Karte:\n\r") - 1);
-
-	    for (int y = MAZE_HEIGHT - 1; y >= 0; y--) {
-	        for (int x = 0; x < MAZE_WIDTH; x++) {
-	            // Wichtig: Jetzt OHNE Leerzeichen nach %d und mit Komma als Trenner
-	            sprintf((char*)UART_MapString, "[%d][%d]:%d,", y, x, mazeMap[y][x]); // <-- HIER GEÄNDERT
-
-	            UART_Transmit(&UART_COM, UART_MapString, strlen((char*)UART_MapString));
-	        }
-	        UART_Transmit(&UART_COM, (uint8_t*)"\n\r", sizeof("\n\r") - 1); // Zeilenumbruch am Ende jeder Zeile
-	    }
-	    // Optional, aber empfohlen: Eine zusätzliche leere Zeile senden, um den Datenblock zu signalisieren
-	    UART_Transmit(&UART_COM, (uint8_t*)"\n\r", sizeof("\n\r") - 1);
+	for (int y = MAZE_HEIGHT - 1; y >= 0; y--) {
+		for (int x = 0; x < MAZE_WIDTH; x++) {
+			sprintf((char*)UART_MapString, "[%d][%d]:%d,", y, x, mazeMap[y][x]);
+			UART_Transmit(&UART_COM, UART_MapString, strlen((char*)UART_MapString));
+		}
+		UART_Transmit(&UART_COM, (uint8_t*)"\n\r", sizeof("\n\r") - 1);
+	}
 }

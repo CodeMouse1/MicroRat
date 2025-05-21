@@ -3,11 +3,8 @@
 #include "Applikation/maze.h"
 #include "Applikation/pathfinding.h"
 #include "Applikation/state_machine.h"
-#include "Funktionsschnittstellen/start_condition.h"
 #include "Funktionsschnittstellen/movement.h"
 #include "Funktionsschnittstellen/sensors.h"
-#include "Hardwaresteuerung/hal_encoder.h"
-#include "Hardwaresteuerung/hal_motor.h"
 
 // Globale Variablen für Mausposition und -ausrichtung
 int currentX = 0;
@@ -27,16 +24,8 @@ int main(void)
 
 	}*/
 
-	//WaitForStart();
-
-	//MazeMap_Init();
-
-	//updateMazeMap(currentX, currentY, currentOrientation); // Initialisiere die Karte mit der Startposition
-	//printMazeMap();	-- kein muss
-
 	while(true){
-		//MotorsDrive();
-		//wallfollower(WALLFOLLOW_RIGHT);
+
 		RatStateMachine_Update();
 	}
 }

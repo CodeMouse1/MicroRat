@@ -101,37 +101,10 @@ static void updatePositionAndMap() {
     else if (currentOrientation == SOUTH) currentY--;
     else if (currentOrientation == WEST) currentX--;
     updateMazeMap(currentX, currentY, currentOrientation);
-    //printMazeMap();
 }
 
-/*void TargetReached(){
-	MotorsSetSpeed(1000, 1000);  // Geringe PWM, Motor fiept
-	for (volatile int i = 0; i < 500000; i++) {} // Kurze Verzögerung
-
-	MotorsSetSpeed(0, 0);      // Pause
-	for (volatile int i = 0; i < 500000; i++) {} // Kurze Verzögerung
-
-	// Zweiter Piep
-	MotorsSetSpeed(1000, 1000);
-	for (volatile int i = 0; i < 500000; i++) {} // Kurze Verzögerung
-
-	MotorsSetSpeed(0, 0);      // Danach ganz aus
-	while(1){
-		// Linkes Auge AN, rechtes Auge AUS
-		DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_1);
-		DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_2);
-		for (volatile int i = 0; i < 500000; i++) {} // Kurze Verzögerung
-
-		// Linkes Auge AUS, rechtes Auge AN
-		DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_1);
-		DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_2);
-		for (volatile int i = 0; i < 500000; i++) {} // Kurze Verzögerung
-	}
-
-}*/
-
 void floodfill(){
-
+	// WIP
 }
 
 

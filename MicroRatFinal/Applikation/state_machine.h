@@ -16,14 +16,16 @@ typedef enum {
 
 extern int currentX;
 extern int currentY;
-//extern Orientation currentOrientation;
 extern int targetX;
 extern int targetY;
 extern Orientation currentOrientation;
 
 extern volatile RatState currentState; // Deklaration, Definition in .c
 
-//void RatStateMachine_Init(void);
 void RatStateMachine_Update(void);
+void sendReportViaUART(void);
+void TargetReached(void);
+
+bool IsStartButtonPressed();
 
 #endif /* APPLIKATION_STATE_MACHINE_H_ */
