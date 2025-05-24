@@ -50,3 +50,10 @@ void MotorsSetSpeed(int left, int right){
 	PWM_SetDutyCycle(&PWM_L, left);
 	PWM_SetDutyCycle(&PWM_R, right);
 }
+
+void StopAndSignal(){
+	MotorsSetSpeed(0,0);
+	TIMER_Stop(&TIMER_REGLER);
+	DIGITAL_IO_ToggleOutput(&DIGITAL_IO_AUGE_1);
+	DIGITAL_IO_ToggleOutput(&DIGITAL_IO_AUGE_2);
+}

@@ -1,9 +1,3 @@
-/*
- * state_machine.c
- *
- *  Created on: 20 May 2025
- *      Author: marcu
- */
 
 #include "DAVE.h"
 #include "stdio.h"
@@ -20,16 +14,12 @@ volatile RatState currentState = STATE_IDLE;
 static bool targetReachedDone = false;
 static bool reportSent = false;
 
-/*void RobotStateMachine_Init(void) {
-    // Initialisierungslogik, falls nötig
-}*/
-
 void RatStateMachine_Update(void) {
     switch (currentState) {
         case STATE_IDLE:
             // Warte auf den Startknopf
             if (IsStartButtonPressed()) {
-                for (volatile int i = 0; i < 5000000; i++) {}
+                for (volatile int i = 0; i < 10000000; i++) {}
                 currentState = STATE_EXPLORE;
                  // Zurücksetzen der Position für neue Erkundung
                 currentX = 0;
@@ -40,8 +30,10 @@ void RatStateMachine_Update(void) {
             }
             break;
         case STATE_EXPLORE:
-            // Wandverfolgung
-            wallfollower(WALLFOLLOW_LEFT);
+        	/*Turn(left);
+        	while(1){}*/
+        	// Wandverfolgung
+        	wallfollower(WALLFOLLOW_LEFT);
             if (currentX == targetX && currentY == targetY) {
 				currentState = STATE_WAIT_REPORT;
             }
@@ -59,7 +51,7 @@ void RatStateMachine_Update(void) {
 			}
 
 			if (reportSent && IsStartButtonPressed()) {
-                for (volatile int i = 0; i < 5000000; i++) {}
+                for (volatile int i = 0; i < 10000000; i++) {}
 				currentState = STATE_EXPLORE;
 				currentX = 0;
 				currentY = 0;
@@ -77,7 +69,7 @@ void RatStateMachine_Update(void) {
 void sendReportViaUART() {
     printMazeMap();
 }
-
+//------------MUSS NOCH NACH SCHICHTEN SEIN---------------------------------------------------------
 // Überprüft, ob der Startknopf gedrückt wurde
 bool IsStartButtonPressed() {
     return DIGITAL_IO_GetInput(&DIGITAL_IO_BUTTON);

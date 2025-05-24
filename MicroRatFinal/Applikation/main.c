@@ -25,38 +25,6 @@ int main(void)
 	}*/
 
 	while(true){
-
 		RatStateMachine_Update();
 	}
 }
-
-/*void TestMotorDifference() {
-
-    EncoderReset();
-    MotorsSetForward();
-
-    // Beide Motoren mit GLEICHER PWM
-    MotorsSetSpeed(3000, 3000);
-
-    // 3 Sekunden fahren lassen
-    for (volatile int i = 0; i < 15000000; i++) {}
-
-    MotorsSetSpeed(0, 0);
-
-    // Encoder auslesen
-    int encoder_L = EncoderReadLeft();
-    int encoder_R = EncoderReadRight();
-
-    // Berechne Kalibrierungsfaktor
-    float calibration_factor = (float)encoder_L / encoder_R;
-
-    DIGITAL_IO_ToggleOutput(&DIGITAL_IO_AUGE_2); // Signal: Test beendet
-
-    sprintf((char*)UART_String,	"Calibration Factor: %.3f\r\n", calibration_factor);
-	UART_Transmit(&UART_COM, UART_String, sizeof(UART_String));
-
-}*/
-
-
-
-

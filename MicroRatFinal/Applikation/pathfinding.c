@@ -55,14 +55,14 @@ void wallfollower(WallfollowMode mode) {
         }
         // Falls Drehung, ausführen & Ausrichtung aktualisieren
         if (turnDirection != none) {
-            turn(turnDirection);
+            Turn(turnDirection);
             updateOrientation(turnDirection);
 		// Nach Drehung fahre eine Zelle weiter, aktualisiere Position & Map
-			move(1);
+			MoveOneCell();
 			updatePositionAndMap();
         } else {
 		// Falls keine Drehung erforderlich, fahre eine Zelle & aktualisiere Position & Map
-            move(1);
+        	MoveOneCell();
             updatePositionAndMap();
         }
         // Drehungsrichung zurücksetzen
