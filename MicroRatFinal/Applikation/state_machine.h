@@ -20,6 +20,8 @@ extern int targetX;
 extern int targetY;
 extern Orientation currentOrientation;
 
+extern float KP_TURN;
+
 extern volatile RatState currentState; // Deklaration, Definition in .c
 
 void RatStateMachine_Update(void);
@@ -27,5 +29,7 @@ void sendReportViaUART(void);
 void TargetReached(void);
 
 bool IsStartButtonPressed();
+
+void updateTurn(WallfollowMode mode);
 
 #endif /* APPLIKATION_STATE_MACHINE_H_ */

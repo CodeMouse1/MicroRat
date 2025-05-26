@@ -7,13 +7,13 @@
 #define INTEGRAL_LIMIT 3000
 
 #define KP_GLEICHLAUF 2000.0f
-#define KP_TURN 35.5f//38.5
+#define KP_TURN 37.5f
 #define KI_TURN 0.35f
-#define KD_TURN 80.0f //statt 10
+#define KD_TURN 80.0f
 
 extern float KP_STRAIGHT;
-#define KI_STRAIGHT 0.25f//0.125f//0.09f
-#define KD_STRAIGHT 15.0f//17.5;//7.5f//0.01f
+#define KI_STRAIGHT 0.25f
+#define KD_STRAIGHT 150.0f
 
 
 extern volatile int isTurning;

@@ -5,6 +5,7 @@
 #include "Applikation/maze.h"
 #include "Applikation/state_machine.h"
 #include "Funktionsschnittstellen/movement.h"
+#include "Funktionsschnittstellen/pid_regler.h"
 #include "Funktionsschnittstellen/sensors.h"
 #include "Hardwaresteuerung/hal_encoder.h"
 #include "Hardwaresteuerung/hal_motor.h"
@@ -30,10 +31,9 @@ void RatStateMachine_Update(void) {
             }
             break;
         case STATE_EXPLORE:
-        	/*Turn(left);
-        	while(1){}*/
         	// Wandverfolgung
         	wallfollower(WALLFOLLOW_LEFT);
+
             if (currentX == targetX && currentY == targetY) {
 				currentState = STATE_WAIT_REPORT;
             }
@@ -69,7 +69,6 @@ void RatStateMachine_Update(void) {
 void sendReportViaUART() {
     printMazeMap();
 }
-//------------MUSS NOCH NACH SCHICHTEN SEIN---------------------------------------------------------
 // Überprüft, ob der Startknopf gedrückt wurde
 bool IsStartButtonPressed() {
     return DIGITAL_IO_GetInput(&DIGITAL_IO_BUTTON);

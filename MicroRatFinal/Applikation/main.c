@@ -5,6 +5,8 @@
 #include "Applikation/state_machine.h"
 #include "Funktionsschnittstellen/movement.h"
 #include "Funktionsschnittstellen/sensors.h"
+#include "Funktionsschnittstellen/pid_regler.h"
+
 
 // Globale Variablen für Mausposition und -ausrichtung
 int currentX = 0;

@@ -54,6 +54,6 @@ void MotorsSetSpeed(int left, int right){
 void StopAndSignal(){
 	MotorsSetSpeed(0,0);
 	TIMER_Stop(&TIMER_REGLER);
-	DIGITAL_IO_ToggleOutput(&DIGITAL_IO_AUGE_1);
-	DIGITAL_IO_ToggleOutput(&DIGITAL_IO_AUGE_2);
+	/*DIGITAL_IO_ToggleOutput(&DIGITAL_IO_AUGE_1);
+	DIGITAL_IO_ToggleOutput(&DIGITAL_IO_AUGE_2);*/
 }

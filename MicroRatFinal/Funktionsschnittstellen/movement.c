@@ -1,15 +1,15 @@
-#include <Funktionsschnittstellen/pd_regler.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "Dave.h"
 #include "Funktionsschnittstellen/movement.h"
 #include "Funktionsschnittstellen/sensors.h"
+#include "Funktionsschnittstellen/pid_regler.h"
 #include "Hardwaresteuerung/hal_motor.h"
 #include "Hardwaresteuerung/hal_ir.h"
 #include "Hardwaresteuerung/hal_encoder.h"
 
-float KP_STRAIGHT = 23;
+float KP_STRAIGHT = 23.0;
 
 volatile int isTurning = 0;
 volatile bool hasRecalibrated = false;
@@ -73,12 +73,12 @@ void RecalibrateAndMoveForward(){
 	MotorsSetSpeed(0, 0);
 	EncoderReset(); // Encoder zurückgesetzt nach der Rückwärtsbewegung
 	MotorsSetForward();
-	setPIDGoalD(30,30); // Ziel für eine Zelle vorwärts = 2cm
-	KP_STRAIGHT = 200;
+	setPIDGoalD(40,40); // Ziel für eine Zelle vorwärts = 2cm
+	KP_STRAIGHT = 100;
 	TIMER_Start(&TIMER_REGLER);
 	while (!PIDdone()) {} // Warte, bis die Vorwärtsbewegung abgeschlossen ist
 	ResetPID(); // Setze PID für die nächste Bewegung zurück
-	KP_STRAIGHT = 23;//29.15;
+	KP_STRAIGHT = 23.0;//29.15;
 }
 
 void Turn (TurnDirection direction){

@@ -9,6 +9,7 @@
 #include "Applikation/pathfinding.h"
 #include "Applikation/state_machine.h"
 #include "Funktionsschnittstellen/sensors.h"
+#include "Funktionsschnittstellen/pid_regler.h"
 #include "Funktionsschnittstellen/movement.h"
 
 /* Deklarationen der globalen Variablen für Position und Ausrichtung (aus main.c)*/
@@ -30,44 +31,42 @@ static void updatePositionAndMap(void);
 
 void wallfollower(WallfollowMode mode) {
     TurnDirection turnDirection = none;
-    while (1) {
-    	if (currentX == targetX && currentY == targetY) {
-			break;
+	if (currentX == targetX && currentY == targetY) {
+		//break;
+	}
+	if (mode == WALLFOLLOW_RIGHT) {
+		if (!IsWallRight()) {
+			turnDirection = right;
 		}
-        if (mode == WALLFOLLOW_RIGHT) {
-            if (!IsWallRight()) {
-                turnDirection = right;
-            }
-            else if (IsWallFront() && IsWallRight() && !IsWallLeft()) {
-                turnDirection = left;
-            } else if (IsWallFront() && IsWallRight() && IsWallLeft()) {
-                turnDirection = around;
-            }
-        } else if (mode == WALLFOLLOW_LEFT) {
-            if (!IsWallLeft()) {
-                turnDirection = left;
-            }
-            else if (IsWallFront() && IsWallLeft() && !IsWallRight()) {
-                turnDirection = right;
-            } else if (IsWallFront() && IsWallRight() && IsWallLeft()) {
-                turnDirection = around;
-            }
-        }
-        // Falls Drehung, ausführen & Ausrichtung aktualisieren
-        if (turnDirection != none) {
-            Turn(turnDirection);
-            updateOrientation(turnDirection);
-		// Nach Drehung fahre eine Zelle weiter, aktualisiere Position & Map
-			MoveOneCell();
-			updatePositionAndMap();
-        } else {
-		// Falls keine Drehung erforderlich, fahre eine Zelle & aktualisiere Position & Map
-        	MoveOneCell();
-            updatePositionAndMap();
-        }
-        // Drehungsrichung zurücksetzen
-        turnDirection = none;
-    }
+		else if (IsWallFront() && IsWallRight() && !IsWallLeft()) {
+			turnDirection = left;
+		} else if (IsWallFront() && IsWallRight() && IsWallLeft()) {
+			turnDirection = around;
+		}
+	} else if (mode == WALLFOLLOW_LEFT) {
+		if (!IsWallLeft()) {
+			turnDirection = left;
+		}
+		else if (IsWallFront() && IsWallLeft() && !IsWallRight()) {
+			turnDirection = right;
+		} else if (IsWallFront() && IsWallRight() && IsWallLeft()) {
+			turnDirection = around;
+		}
+	}
+	// Falls Drehung, ausführen & Ausrichtung aktualisieren
+	if (turnDirection != none) {
+		Turn(turnDirection);
+		updateOrientation(turnDirection);
+	// Nach Drehung fahre eine Zelle weiter, aktualisiere Position & Map
+		MoveOneCell();
+		updatePositionAndMap();
+	} else {
+	// Falls keine Drehung erforderlich, fahre eine Zelle & aktualisiere Position & Map
+		MoveOneCell();
+		updatePositionAndMap();
+	}
+	// Drehungsrichung zurücksetzen
+	turnDirection = none;
 }
 
 static void updateOrientation(TurnDirection direction) {
