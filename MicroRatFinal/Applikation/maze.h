@@ -13,9 +13,6 @@
 
 #define UNVISITED_DISTANCE 9999
 
-extern int mazeMap[MAZE_HEIGHT][MAZE_WIDTH];
-extern int distanceMap[MAZE_HEIGHT][MAZE_WIDTH];
-
 typedef enum {
     NORTH,
     EAST,
@@ -23,13 +20,17 @@ typedef enum {
     WEST
 } Orientation;
 
+extern int mazeMap[MAZE_HEIGHT][MAZE_WIDTH];
+extern int distanceMap[MAZE_HEIGHT][MAZE_WIDTH];
+
 void MazeMap_Init(void);
 void updateMazeMap(int currentX, int currentY, int currentOrientation);
+void calculateDistanceMap(int targetX, int targetY);
 void printMazeMap(void);
 
+bool isValidCell(int x, int y);
 bool hasWallBetween(int x1, int y1, int x2, int y2);
 
-void calculateDistanceMap(int targetX, int targetY);
 
 
 #endif /* APPLIKATION_MAZE_H_ */
