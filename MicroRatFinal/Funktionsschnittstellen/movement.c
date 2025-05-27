@@ -1,15 +1,15 @@
+#include <Funktionsschnittstellen/pd_regler.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "Dave.h"
 #include "Funktionsschnittstellen/movement.h"
 #include "Funktionsschnittstellen/sensors.h"
-#include "Funktionsschnittstellen/pid_regler.h"
 #include "Hardwaresteuerung/hal_motor.h"
 #include "Hardwaresteuerung/hal_ir.h"
 #include "Hardwaresteuerung/hal_encoder.h"
 
-float KP_STRAIGHT = 23.0;
+float KP_STRAIGHT = 22.85;//23;
 
 volatile int isTurning = 0;
 volatile bool hasRecalibrated = false;
@@ -78,7 +78,7 @@ void RecalibrateAndMoveForward(){
 	TIMER_Start(&TIMER_REGLER);
 	while (!PIDdone()) {} // Warte, bis die Vorwärtsbewegung abgeschlossen ist
 	ResetPID(); // Setze PID für die nächste Bewegung zurück
-	KP_STRAIGHT = 23.0;//29.15;
+	KP_STRAIGHT = 22.85;//23;
 }
 
 void Turn (TurnDirection direction){
@@ -97,12 +97,12 @@ void Turn (TurnDirection direction){
 	}else if(direction == around){
 		if (ReadLeft() < ReadRight()) {
 			MotorsSetLeft();
-			goal_distance_L = distance_90_deg*1.95;
-			goal_distance_R = distance_90_deg*1.95;
+			goal_distance_L = distance_90_deg*1.9;
+			goal_distance_R = distance_90_deg*1.9;
 		} else if (ReadRight() < ReadLeft()) {
 			MotorsSetRight();
-			goal_distance_L = distance_90_deg*1.95;
-			goal_distance_R = distance_90_deg*1.95;
+			goal_distance_L = distance_90_deg*1.9;
+			goal_distance_R = distance_90_deg*1.9;
 		}
 	}
 	setPIDGoalD(goal_distance_L, goal_distance_R);

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "Dave.h"
-#include "Funktionsschnittstellen/pid_regler.h"
+#include "Funktionsschnittstellen/pd_regler.h"
 #include "Funktionsschnittstellen/movement.h"
 #include "Funktionsschnittstellen/sensors.h"
 #include "Hardwaresteuerung/hal_motor.h"
@@ -16,9 +16,92 @@ volatile float integral_error_L = 0.0f;
 volatile float last_error_L = 0.0f;
 volatile float last_error_R = 0.0f;
 
+//float KP_TURN = 35.5;
+
+#define KP_WALL_FOLLOW   0.00001f
+#define WALL_TOLERANCE   1005.0f
+#define SENSOR_MAX_RANGE 30.0f
+
 void ControllerHandler(){
 	UpdatePID();
 }
+
+/*void UpdatePID() {
+	int counter_R = EncoderReadRight();
+	int counter_L = EncoderReadLeft();
+	int angleError = 0;
+	static int lastAngleError_Turn = 0;
+	static int last_counter_R = 0;
+	static int last_counter_L = 0;
+	float dynamicKP_Turn = KP_ANGLE_TURN_BASE;
+
+	float current_pos_R_mm = GetEncoderRight_mm();
+	float current_pos_L_mm = GetEncoderLeft_mm();
+
+	distanceError_R = distanceGoal - current_pos_R_mm;
+	distanceError_L = distanceGoal - current_pos_L_mm;
+
+	int pwmL = 0; // Initialisierung
+	int pwmR = 0; // Initialisierung
+
+	if (isTurning) {
+		// PID-Regelung für die Drehung
+		int currentAngleDifference = counter_R + counter_L;
+		angleError = angleGoal - currentAngleDifference;
+
+		if (turnStartCounter < BOOST_VERZOEGERUNG_ZYKLEN) {
+			turnStartCounter++;
+		} else {
+			// Boost-Logik nach der Verzögerung
+			int aktuelleDrehgeschwindigkeit = abs((counter_R - last_counter_R)) + abs((counter_L - last_counter_L));
+			if (aktuelleDrehgeschwindigkeit <= MIN_DREHGESCHWINDIGKEIT && angleError >= 1) {
+				dynamicKP_Turn = KP_ANGLE_TURN_BOOST;
+			}
+		}
+		float kd_turn = 1.5;
+		float derivativeCorrection = kd_turn * (angleError - lastAngleError_Turn);
+		float turnCorrection = dynamicKP_Turn * angleError + derivativeCorrection;
+
+		// Gleichlaufkorrektur (bleibt wie gehabt)
+		int encoderDifference = counter_R - counter_L;
+		float gleichlaufKorrektur = KP_GLEICHLAUF_T * encoderDifference;
+
+		// Anwenden der Korrektur auf die PWM-Werte
+		pwmL = abs((int)(turnCorrection + gleichlaufKorrektur));
+		pwmR = abs((int)(turnCorrection - gleichlaufKorrektur));
+
+		lastAngleError_Turn = angleError;
+		last_counter_R = counter_R;
+		last_counter_L = counter_L;
+
+	}else {
+		integral_error_R += distanceError_R;
+		integral_error_L += distanceError_L;
+		// PI-Regelung für die Geradeausfahrt MIT Gleichlauf
+		float integral_limit = 3000.0f;
+		if (integral_error_R > integral_limit) integral_error_R = integral_limit;
+		if (integral_error_R < -integral_limit) integral_error_R = -integral_limit;
+		if (integral_error_L > integral_limit) integral_error_L = integral_limit;
+		if (integral_error_L < -integral_limit) integral_error_L = -integral_limit;
+		// P-Anteil
+		float proportionalCorrection_R = KP_STRAIGHT * distanceError_R;
+		float proportionalCorrection_L = KP_STRAIGHT * distanceError_L;
+		// I-Anteil
+		float integralCorrection_R = KI_STRAIGHT * integral_error_R;
+		float integralCorrection_L = KI_STRAIGHT * integral_error_L;
+		// Gleichlaufkorrektur
+		float encoderDifferenceStraight_mm = current_pos_R_mm - current_pos_L_mm;
+		float gleichlaufKorrekturStraight = KP_GLEICHLAUF_S * encoderDifferenceStraight_mm;
+		// Gesamtkorrektur (P + I + Gleichlauf)
+		pwmL = abs((int)(proportionalCorrection_L + integralCorrection_L + gleichlaufKorrekturStraight));
+		pwmR = abs((int)(proportionalCorrection_R + integralCorrection_R - gleichlaufKorrekturStraight));
+	}
+
+	pwmL = (pwmL > PWM_MAX) ? PWM_MAX : pwmL;
+	pwmR = (pwmR > PWM_MAX) ? PWM_MAX : pwmR;
+
+	MotorsSetSpeed(pwmL, pwmR);
+}*/
 
 void UpdatePID() {
 	float kp_current, ki_current , kd_current;
@@ -79,8 +162,8 @@ void UpdatePID() {
 }
 
 void setPIDGoalD(float distance_R, float distance_L) {
-	distanceGoal_L = distance_R;
-	distanceGoal_R = distance_L;
+	distanceGoal_L = distance_L;
+	distanceGoal_R = distance_R;
 }
 
 int PIDdone() {
@@ -109,7 +192,6 @@ int PIDdone() {
 	    for (volatile int i = 0; i < 500000; i++) {}
 	}
 
-
 	} else {
 		stableCycleCount = 0;
 	}
@@ -118,7 +200,7 @@ int PIDdone() {
 }
 
 void ResetPID(){
-	for (volatile int i = 0; i < 2000000; i++) {}
+	for (volatile int i = 0; i < 2500000; i++) {}
 
 	isTurning = 0;
 

@@ -5,15 +5,13 @@
 #include "Applikation/state_machine.h"
 #include "Funktionsschnittstellen/movement.h"
 #include "Funktionsschnittstellen/sensors.h"
-#include "Funktionsschnittstellen/pid_regler.h"
-
 
 // Globale Variablen für Mausposition und -ausrichtung
-int currentX = 0;
+/*int currentX = 0;
 int currentY = 0;
-int targetX = 6;
+int targetX = 4;
 int targetY = 3;
-Orientation currentOrientation = EAST;
+Orientation currentOrientation = EAST;*/
 
 int main(void)
 {

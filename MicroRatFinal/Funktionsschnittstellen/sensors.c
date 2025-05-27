@@ -1,10 +1,10 @@
+#include <Funktionsschnittstellen/pd_regler.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <math.h>
 #include "Dave.h"
 #include "Funktionsschnittstellen/sensors.h"
 #include "Funktionsschnittstellen/movement.h"
-#include "Funktionsschnittstellen/pid_regler.h"
 #include "Hardwaresteuerung/hal_ir.h"
 #include "Hardwaresteuerung/hal_us.h"
 #include "Hardwaresteuerung/hal_encoder.h"
@@ -97,12 +97,12 @@ void DebugPrint(){
 
 bool IsWallLeft(void) {
     // Rückgabewert ist true, wenn der IR-Wert den Schwellenwert unterschreitet
-    return GetDistanceLeft_mm() < WALL_DETECTION_THRESHOLD+30;
+    return GetDistanceLeft_mm() < WALL_DETECTION_THRESHOLD;
 }
 
 bool IsWallRight(void) {
     // Rückgabewert ist true, wenn der IR-Wert den Schwellenwert unterschreitet
-    return GetDistanceRight_mm() < WALL_DETECTION_THRESHOLD+30;
+    return GetDistanceRight_mm() < WALL_DETECTION_THRESHOLD;
 }
 
 bool IsWallFront(void) {
