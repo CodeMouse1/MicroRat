@@ -12,7 +12,7 @@
 #define KD_TURN 80.0f
 
 extern float KP_STRAIGHT;
-#define KI_STRAIGHT 0.25f
+#define KI_STRAIGHT 0.26f
 #define KD_STRAIGHT 400.0f//150.0f
 
 

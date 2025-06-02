@@ -9,7 +9,7 @@
 #include "Hardwaresteuerung/hal_ir.h"
 #include "Hardwaresteuerung/hal_encoder.h"
 
-float KP_STRAIGHT = 22.85;//23;
+float KP_STRAIGHT = 30;//24;
 
 volatile int isTurning = 0;
 volatile bool hasRecalibrated = false;

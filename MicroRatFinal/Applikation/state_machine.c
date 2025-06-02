@@ -25,7 +25,7 @@ static bool reportSent = false;
 void RatStateMachine_Update(void) {
     switch (currentState) {
         case STATE_IDLE:
-            // Warte auf den Startknopf
+            //Warte auf den Startknopf
             if (IsStartButtonPressed()) {
                 for (volatile int i = 0; i < 10000000; i++) {}
                 currentState = STATE_EXPLORE;
