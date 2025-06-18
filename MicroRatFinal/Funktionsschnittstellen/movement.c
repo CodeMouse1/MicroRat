@@ -76,6 +76,10 @@ void RecalibrateAndMoveForward(){
 	KP_STRAIGHT = 23.0;
 }
 
+void Stop(){
+	MotorsSetSpeed(0, 0);
+}
+
 void Turn (TurnDirection direction){
 	EncoderReset();
 	float goal_distance_L = 0.0f;

@@ -10,6 +10,7 @@
 
 #include "Applikation/maze.h"
 #include "Applikation/state_machine.h"
+#include <stdbool.h>
 
 #define QUEUE_SIZE (MAZE_WIDTH * MAZE_HEIGHT)
 

@@ -5,6 +5,7 @@
 #include "Dave.h"
 #include "Funktionsschnittstellen/sensors.h"
 #include "Funktionsschnittstellen/movement.h"
+#include "Funktionsschnittstellen/debug_comms.h"
 #include "Hardwaresteuerung/hal_ir.h"
 #include "Hardwaresteuerung/hal_us.h"
 #include "Hardwaresteuerung/hal_encoder.h"

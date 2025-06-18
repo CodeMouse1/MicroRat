@@ -24,6 +24,7 @@ typedef enum {
 
 void MovementInit(void);
 void MoveOneCell(void);
+void Stop(void);
 void Turn(TurnDirection direction);
 void RecalibrateAndMoveForward(void);
 

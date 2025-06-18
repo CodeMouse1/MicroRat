@@ -4,13 +4,14 @@
  *  Created on: 17 Apr 2025
  *      Author: marcu
  */
-#include "Dave.h"
+#include <stdbool.h>
 #include "Applikation/maze.h"
 #include "Applikation/pathfinding.h"
 #include "Applikation/state_machine.h"
 #include "Funktionsschnittstellen/sensors.h"
 #include "Funktionsschnittstellen/movement.h"
-#include "Hardwaresteuerung/hal_motor.h"
+
+//#include "Hardwaresteuerung/hal_motor.h"
 
 static Cell queue[QUEUE_SIZE];
 
@@ -152,7 +153,7 @@ void calculateDistanceMap(int targetX_param, int targetY_param) {
 bool executeShortestPathStep(void) {
     // 1. Prüfen, ob das Ziel bereits erreicht ist (Distanz 0)
     if (distanceMap[currentY][currentX] == 0) {
-        MotorsSetSpeed(0, 0); // Roboter anhalten
+        Stop();
         return false; // Ziel erreicht, kein weiterer Schritt nötig
     }
 
@@ -161,7 +162,7 @@ bool executeShortestPathStep(void) {
 
     // 3. Fehlerprüfung: Wenn kein Fortschritt erzielt werden kann (sollte bei funktionierendem Flood Fill nicht passieren)
     if (next_step.nextX == currentX && next_step.nextY == currentY && next_step.nextOrientation == currentOrientation) {
-        MotorsSetSpeed(0, 0); // Roboter anhalten
+        Stop();
         // Optional: Hier könnte eine Fehlermeldung über UART gesendet werden
         return false; // Fehler: Kein gültiger nächster Schritt gefunden oder festgefahren
     }

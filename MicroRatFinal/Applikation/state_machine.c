@@ -14,8 +14,8 @@ volatile RatState currentState = STATE_IDLE;
 
 int currentX = 0;
 int currentY = 0;
-int targetX = 3;
-int targetY = 1;
+int targetX = 6;
+int targetY = 3;
 
 Orientation currentOrientation = EAST;
 

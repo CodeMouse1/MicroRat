@@ -8,6 +8,8 @@
 #ifndef APPLIKATION_MAZE_H_
 #define APPLIKATION_MAZE_H_
 
+#include <stdbool.h>
+
 #define MAZE_HEIGHT 4
 #define MAZE_WIDTH 7
 

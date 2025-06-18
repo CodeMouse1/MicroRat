@@ -4,12 +4,15 @@
  *  Created on: 19 May 2025
  *      Author: marcu
  */
-#include "DAVE.h"
 #include <stdio.h>
+#include <stdint.h>
 #include "Applikation/maze.h"
 #include "Applikation/pathfinding.h"
 #include "Applikation/state_machine.h"
 #include "Funktionsschnittstellen/sensors.h"
+#include "Funktionsschnittstellen/debug_comms.h"
+
+
 
 // Puffer für die Ausgabe von Strings über UART
 uint8_t UART_MapString[100];
@@ -69,7 +72,7 @@ void updateMazeMap(int currentX, int currentY, int currentOrientation) {
     mazeMap[currentY][currentX] = cellInfo; // Speichern der aktualisierten Infos
 }
 
-void printMazeMap(void) {
+/*void printMazeMap(void) {
 	UART_Transmit(&UART_COM, (uint8_t*)"Labyrinth Karte:\n\r", sizeof("Labyrinth Karte:\n\r") - 1);
 	// Gehe Zellenweise durch das Labyrinth (von oben nach unten, wie in deinem Skript)
 	for (int y = MAZE_HEIGHT - 1; y >= 0; y--) { // Y-Achse umgekehrt für Top-Down-Darstellung
@@ -89,8 +92,24 @@ void printMazeMap(void) {
 	}
 	// Eine zusätzliche Leerzeile signalisiert das Ende des Datenblocks für dein Python-Skript
 	UART_Transmit(&UART_COM, (uint8_t*)"\n\r", sizeof("\n\r") - 1);
-}
+}*/
+void printMazeMap(void) {
+    // Nun nutzen wir die abstrahierte Kommunikationsschicht
+    Debug_Comms_SendString("Labyrinth Karte:\n\r"); // <-- Geändert!
 
+    for (int y = MAZE_HEIGHT - 1; y >= 0; y--) {
+        for (int x = 0; x < MAZE_WIDTH; x++) {
+            sprintf((char*)UART_MapString, "[%d][%d]:%d:%d,",
+                    y,
+                    x,
+                    mazeMap[y][x],
+                    distanceMap[y][x]);
+            Debug_Comms_SendString((char*)UART_MapString); // <-- Geändert!
+        }
+        Debug_Comms_SendString("\n\r"); // <-- Geändert!
+    }
+    Debug_Comms_SendString("\n\r"); // <-- Geändert!
+}
 
 // Hilfsfunktion, um zu prüfen, ob eine Zelle innerhalb des Labyrinths liegt
 bool isValidCell(int x, int y) {
