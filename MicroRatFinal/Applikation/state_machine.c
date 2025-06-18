@@ -21,12 +21,19 @@ Orientation currentOrientation = EAST;
 
 static bool targetReachedDone = false;
 static bool reportSent = false;
+static bool diagnosticsPerformed = false;
+
 
 void RatStateMachine_Update(void) {
     switch (currentState) {
         case STATE_IDLE:
-            //Warte auf den Startknopf
+            // Warte auf den Startknopf
             if (IsStartButtonPressed()) {
+            	// Ausführen der Diagnose
+				if (!diagnosticsPerformed) {
+					PerformDiagnosticCheck();
+					diagnosticsPerformed = true;
+				}
                 for (volatile int i = 0; i < 10000000; i++) {}
                 currentState = STATE_EXPLORE;
                 currentX = 0;
@@ -37,8 +44,13 @@ void RatStateMachine_Update(void) {
             }
             break;
         case STATE_EXPLORE:
+        	/*while(1){
+        		Turn(left);
+        		Turn(right);
+        		Turn(around);
+        	}*/
         	wallfollower(WALLFOLLOW_LEFT);
-            if (currentX == targetX && currentY == targetY) {
+            if (currentX == 6/*targetX*/ && currentY == 3 /*targetY*/) {
 				currentState = STATE_WAIT_REPORT;
             }
             break;

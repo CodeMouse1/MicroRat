@@ -4,6 +4,7 @@
  *  Created on: 17 Apr 2025
  *      Author: marcu
  */
+#include <stdlib.h>
 #include "Dave.h"
 #include "Hardwaresteuerung/hal_motor.h"
 
@@ -46,9 +47,45 @@ void MotorsDrive(){
 	PWM_Start(&PWM_L);
 }
 
-void MotorsSetSpeed(int left, int right){
-	PWM_SetDutyCycle(&PWM_L, left);
-	PWM_SetDutyCycle(&PWM_R, right);
+void MotorsSetSpeed(int speedL, int speedR) {
+    // --- Linker Motor ---
+    if (speedL > 0) {
+        // Motor soll vorwärts drehen (IN1 High, IN2 Low)
+        DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_1);
+        DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_2);
+        // PWM-Duty-Cycle für linken Motor setzen
+        PWM_SetDutyCycle(&PWM_L, speedL);
+    } else if (speedL < 0) {
+        // Motor soll rückwärts drehen (IN1 Low, IN2 High)
+        DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_1);
+        DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_2);
+        // PWM-Duty-Cycle für linken Motor setzen (mit Betrag der Geschwindigkeit)
+        PWM_SetDutyCycle(&PWM_L, abs(speedL));
+    } else {
+        // Motor stoppen (Freilauf: IN1 Low, IN2 Low, PWM auf 0)
+        DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_1);
+        DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_2);
+        PWM_SetDutyCycle(&PWM_L, 0);
+    }
+    // --- Rechter Motor ---
+    if (speedR > 0) {
+        // Motor soll vorwärts drehen (IN3 Low, IN4 High)
+        DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_3);
+        DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_4);
+        // PWM-Duty-Cycle für rechten Motor setzen
+        PWM_SetDutyCycle(&PWM_R, speedR);
+    } else if (speedR < 0) {
+        // Motor soll rückwärts drehen (IN3 High, IN4 Low)
+        DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_3);
+        DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_4);
+        // PWM-Duty-Cycle für rechten Motor setzen (mit Betrag der Geschwindigkeit)
+        PWM_SetDutyCycle(&PWM_R, abs(speedR));
+    } else {
+        // Motor stoppen (Freilauf: IN3 Low, IN4 Low, PWM auf 0)
+        DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_3);
+        DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_4);
+        PWM_SetDutyCycle(&PWM_R, 0);
+    }
 }
 
 void StopAndSignal(){

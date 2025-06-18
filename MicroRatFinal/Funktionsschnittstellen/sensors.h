@@ -27,6 +27,7 @@ void DebugPrint(void);
 bool IsWallLeft(void);
 bool IsWallRight(void);
 bool IsWallFront(void);
+bool PerformDiagnosticCheck(void);
 
 float GetEncoderLeft_mm(void);
 float GetEncoderRight_mm(void);

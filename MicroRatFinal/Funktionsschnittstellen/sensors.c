@@ -8,8 +8,10 @@
 #include "Hardwaresteuerung/hal_ir.h"
 #include "Hardwaresteuerung/hal_us.h"
 #include "Hardwaresteuerung/hal_encoder.h"
+#include "Hardwaresteuerung/hal_motor.h"
 
-uint8_t UART_String[100];
+uint8_t UART_String[500];
+uint8_t DiagnosticSummaryString[100];
 
 typedef struct {
     int raw_adc_value;
@@ -137,6 +139,135 @@ float GetEncoderRight_mm(void) {
     // Umrechnung von Ticks in Millimeter mit MM_PER_TICK (aus sensors.h)
     float distance_float = (float)raw_ticks * TICK_PER_MM;
     return (distance_float); // Auf ganzen Millimeter runden und zurückgeben
+}
+
+bool PerformDiagnosticCheck(void) {
+	const float MIN_ENCODER_DISTANCE_FOR_TEST = 10.0f;
+	const int DIAG_TEST_PWM = 3000;
+	// Warten auf US
+	for (volatile int i = 0; i < 5000000; i++) {}
+    bool all_ok = true;
+    int offset = 0;
+    offset += sprintf((char*)UART_String + offset, "\033[H\033[2J");
+
+    // Lies die Distanzsensor-Werte ab
+    float dist_front = GetDistanceFront_mm();
+    int dist_left = ReadLeft();
+    int dist_right = ReadRight();
+
+    offset += sprintf((char*)UART_String + offset, "Initialer Sensor-Check:\n\r");
+
+    // Distanzsensoren Check: Prüfen, ob die Werte im erwarteten Bereich liegen
+    if (dist_front == 0) {
+    	offset += sprintf((char*)UART_String + offset, "  FEHLER: Frontsensor kann nicht 0 sein, Versorgung prüfen (%.1fmm)\n\r", dist_front);
+        all_ok = false;
+    } else {
+    	offset += sprintf((char*)UART_String + offset, "  OK: Frontsensor (%.1fmm)\n\r", dist_front);
+    }
+
+    if (dist_left > 2000) {
+    	offset += sprintf((char*)UART_String + offset, "  FEHLER: Linker Sensor außer Bereich, Versorgung prüfen (%d)\n\r", dist_left);
+        all_ok = false;
+    } else {
+    	offset += sprintf((char*)UART_String + offset, "  OK: Linker Sensor (%d)\n\r", dist_left);
+    }
+
+    if (dist_right > 2000) {
+    	offset += sprintf((char*)UART_String + offset, "  FEHLER: Rechter Sensor außer Bereich, Versorgung prüfen (%d)\n\r", dist_right);
+        all_ok = false;
+    } else {
+    	offset += sprintf((char*)UART_String + offset, "  OK: Rechter Sensor (%d)\n\r", dist_right);
+    }
+    // --- 2. Motor- und Encoder-Reaktionstest ---
+    offset += sprintf((char*)UART_String + offset, "Motor-/Encoder-Reaktionstest:\n\r");
+
+    EncoderReset();
+    MotorsSetSpeed(DIAG_TEST_PWM, DIAG_TEST_PWM);
+	for (volatile int i = 0; i < 500000; i++) {}
+    MotorsSetSpeed(0, 0);
+	MotorsSetSpeed(-DIAG_TEST_PWM, -DIAG_TEST_PWM);
+	for (volatile int i = 0; i < 500000; i++) {}
+	MotorsSetSpeed(0, 0);
+
+    // Nach dem Test Encoder-Werte ablesen (jetzt sollten sie sich bewegt haben)
+    float enc_L_end = GetDistanceLeft_mm();
+    float enc_R_end = GetDistanceRight_mm();
+
+    // Prüfen, ob Encoder überhaupt hochgezählt haben und die Mindestdistanz erreicht wurde
+    if (fabs(enc_L_end) < MIN_ENCODER_DISTANCE_FOR_TEST) {
+    	offset += sprintf((char*)UART_String + offset, "  FEHLER: Linker Encoder zu wenig Distanz (%.1fmm)\n\r", enc_L_end);
+        all_ok = false;
+    } else {
+    	offset += sprintf((char*)UART_String + offset, "  OK: Linker Encoder (%.1fmm)\n\r", enc_L_end);
+    }
+
+    if (fabs(enc_R_end) < MIN_ENCODER_DISTANCE_FOR_TEST) {
+    	offset += sprintf((char*)UART_String + offset, "  FEHLER: Rechter Encoder zu wenig Distanz (%.1fmm)\n\r", enc_R_end);
+        all_ok = false;
+    } else {
+    	offset += sprintf((char*)UART_String + offset, "  OK: Rechter Encoder (%.1fmm)\n\r", enc_R_end);
+    }
+    // --- Abschließendes Ergebnis ---
+    if (all_ok) {
+    	// Änern zu HAL:
+    	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_1);
+		DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_2);
+		for (volatile int i = 0; i < 500000; i++) {}
+		DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_1);
+		DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_2);
+		for (volatile int i = 0; i < 500000; i++) {}
+		DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_1);
+		DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_2);
+		for (volatile int i = 0; i < 500000; i++) {}
+		DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_1);
+		DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_2);
+		for (volatile int i = 0; i < 500000; i++) {}
+    } else {
+        // Bei Fehler: Finalen Fehlerbericht in den Haupt-Log-String schreiben
+        offset += sprintf((char*)UART_String + offset, "DIAGNOSE: Einige Checks FEHLGESCHLAGEN. Anschlüsse untersuchen.\n\r");
+    }
+    UART_Transmit(&UART_COM, UART_String, offset);
+    if (!all_ok) {
+            // <<<<< NEUE VARIABLEN FÜR DIE STEUERUNG DER AUSGABEHÄUFIGKEIT
+            // Dieser Zähler wird in jedem Schleifendurchlauf erhöht.
+            static unsigned int print_iteration_counter = 0;
+            // Dieser Wert bestimmt, nach wie vielen Schleifendurchläufen eine neue UART-Ausgabe erfolgt.
+            // Ein höherer Wert = seltenerer Print = bessere Lesbarkeit.
+            const unsigned int PRINT_UPDATE_INTERVAL = 5; // Beispiel: Alle 5 Schleifendurchläufe aktualisieren
+
+    		while (1) {
+    			// 1. Kontinuierliches alternierendes Blinken der LEDs
+                // DIESER TEIL LÄUFT IN JEDEM DURCHLAUF, SEHR OFT!
+    			DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_1);
+    			DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_2);
+    			for (volatile int i = 0; i < 200000; i++) {} // Kurzer Delay für Blinken
+    			DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_2);
+    			DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_1);
+    			for (volatile int i = 0; i < 200000; i++) {} // Kurzer Delay für Blinken
+
+                // 2. Periodische UART-Ausgabe des DETALLIERTEN Berichts
+                // DIESER TEIL LÄUFT NUR JEDES "PRINT_UPDATE_INTERVAL"-te MAL!
+                if (print_iteration_counter >= PRINT_UPDATE_INTERVAL) {
+                	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_2);
+					DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_1);
+                    // Sende den gesamten UART_String (der die ANSI-Codes für "Bildschirm löschen" am Anfang hat)
+                    UART_Transmit(&UART_COM, UART_String, offset);
+                    // LÄNGERER DELAY NACH DER AUSGABE FÜR BESSERE LESBARKEIT
+                    // Dieser Delay sorgt für eine Pause, nachdem der komplette Report gesendet wurde.
+                    // Passe diesen Wert an, bis es für dich angenehm zu lesen ist.
+                    for (volatile int i = 0; i < 5000000; i++) {} // Erhöhter Delay, z.B. 1.5 Millionen Zyklen
+                    print_iteration_counter = 0; // Zähler zurücksetzen, um den nächsten Zählzyklus zu starten
+                } else {
+                    // Kleinerer Delay in den Durchläufen, in denen NICHT gedruckt wird.
+                    // Das sorgt dafür, dass die LED-Blinkfrequenz relativ konstant bleibt
+                    // und der Microcontroller nicht 100% ausgelastet ist, wenn die Hauptausgabe selten ist.
+                    for (volatile int int_delay_loop = 0; int_delay_loop < 50000; int_delay_loop++) {}
+                }
+
+                print_iteration_counter++; // Zähler für jeden Schleifendurchlauf erhöhen
+    		}
+        }
+    return all_ok;
 }
 
 
