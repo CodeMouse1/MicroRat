@@ -4,14 +4,10 @@
  *  Created on: 18 Jun 2025
  *      Author: marcu
  */
-#include "DAVE.h"
+#include <string.h>
+#include <stdint.h>
 #include "Funktionsschnittstellen/debug_comms.h"
 #include "Hardwaresteuerung/hal_uart.h"
-#include <string.h>
-
-
-
-
 
 void Debug_Comms_SendString(const char* str) {
     if (str == NULL) {

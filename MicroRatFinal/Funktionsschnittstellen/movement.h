@@ -8,11 +8,11 @@
 #ifndef FUNKTIONSSCHNITTSTELLEN_MOVEMENT_H_
 #define FUNKTIONSSCHNITTSTELLEN_MOVEMENT_H_
 
-#define ROBOT_WHEEL_BASE_MM 89.0f//91.68f//89.12f
-#define MM_PER_CELL_REFERENCE 170.0f // 16cm
+#define ROBOT_WHEEL_BASE_MM 88.0f//91.68f//89.12f
+#define MM_PER_CELL_REFERENCE 170.0f // 17cm
 #define DISTANCE_PER_90_DEGREE_MM (M_PI * ROBOT_WHEEL_BASE_MM / 4.0f)
 
-#define MIN_WALL_DISTANCE 20.0f
+#define MIN_WALL_DISTANCE 30.0f
 #define MAX_MEASUREMENT_DISTANCE 1000.0f
 
 typedef enum {
@@ -22,7 +22,6 @@ typedef enum {
 	around
 } TurnDirection;
 
-void MovementInit(void);
 void MoveOneCell(void);
 void Stop(void);
 void Turn(TurnDirection direction);

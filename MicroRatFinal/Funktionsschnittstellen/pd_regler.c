@@ -6,6 +6,7 @@
 #include "Funktionsschnittstellen/pd_regler.h"
 #include "Funktionsschnittstellen/movement.h"
 #include "Funktionsschnittstellen/sensors.h"
+#include "Funktionsschnittstellen/timer_utils.h"
 #include "Hardwaresteuerung/hal_motor.h"
 #include "Hardwaresteuerung/hal_encoder.h"
 
@@ -16,9 +17,9 @@ volatile float integral_error_L = 0.0f;
 volatile float last_error_L = 0.0f;
 volatile float last_error_R = 0.0f;
 
-volatile float signed_current_pos_L = 0.0f; // Die interne, vorzeichenbehaftete Position für PID
+volatile float signed_current_pos_L = 0.0f;
 volatile float signed_current_pos_R = 0.0f;
-volatile float last_abs_encoder_L = 0.0f; // Speichert den letzten ABSOLUT positiven Encoder-Wert
+volatile float last_abs_encoder_L = 0.0f;
 volatile float last_abs_encoder_R = 0.0f;
 volatile float last_pwmL_calculated = 0.0f;
 volatile float last_pwmR_calculated = 0.0f;
@@ -26,83 +27,23 @@ volatile float last_pwmR_calculated = 0.0f;
 volatile float last_gleichlaufError = 0.0f;
 
 //Hilfestellung
-uint8_t UART_PID[500]; // Globaler UART-Puffer
+uint8_t UART_PID[500];
 static PidLogEntry pid_log_buffer[PID_LOG_BUFFER_SIZE];
 static volatile int pid_log_index = 0;
 static volatile int pid_log_count = 0;
-static volatile int pid_update_counter = 0; // Zähler für das Intervall
+static volatile int pid_update_counter = 0;
 
 void ControllerHandler(){
 	UpdatePID();
 }
 
-/*void UpdatePID() {
-	float kp_current, ki_current , kd_current;
-	if (isTurning) {
-		kp_current = KP_TURN;
-		ki_current = KI_TURN;
-		kd_current = KD_TURN;
-	} else {
-		kp_current = KP_STRAIGHT;
-		ki_current = KI_STRAIGHT;
-		kd_current = KD_STRAIGHT;
-	}
-	// Encoder-Werte in Millimeter abrufen
-	float current_pos_L_mm = GetEncoderLeft_mm();
-	float current_pos_R_mm = GetEncoderRight_mm();
-
-	// Fehlerberechnung für jedes Rad
-	float error_L = distanceGoal_L - current_pos_L_mm;
-	float error_R = distanceGoal_R - current_pos_R_mm;
-
-	// Integralanteile aktualisieren
-	integral_error_L += error_L;
-	integral_error_R += error_R;
-
-	// Integralbegrenzung
-	if (integral_error_L > INTEGRAL_LIMIT) integral_error_L = INTEGRAL_LIMIT;
-	if (integral_error_L < -INTEGRAL_LIMIT) integral_error_L = -INTEGRAL_LIMIT;
-	if (integral_error_R > INTEGRAL_LIMIT) integral_error_R = INTEGRAL_LIMIT;
-	if (integral_error_R < -INTEGRAL_LIMIT) integral_error_R = -INTEGRAL_LIMIT;
-
-	// P, I, D Anteile
-	float proportionalCorrection_L = kp_current * error_L;
-	float integralCorrection_L = ki_current * integral_error_L;
-	float derivativeCorrection_L = kd_current * (error_L - last_error_L);
-
-	float proportionalCorrection_R = kp_current * error_R;
-	float integralCorrection_R = ki_current * integral_error_R;
-	float derivativeCorrection_R = kd_current * (error_R - last_error_R);
-
-	float currentEncoderDifference = current_pos_R_mm - current_pos_L_mm;
-	float gleichlaufError = currentEncoderDifference;
-	float gleichlaufKorrektur = KP_GLEICHLAUF * gleichlaufError;
-
-	// Gesamte PWM-Werte
-	int pwmL = (int)(proportionalCorrection_L + integralCorrection_L + derivativeCorrection_L + gleichlaufKorrektur);
-	int pwmR = (int)(proportionalCorrection_R + integralCorrection_R + derivativeCorrection_R - gleichlaufKorrektur);
-
-	// PWM-Werte begrenzen und sicherstellen, dass sie positiv sind fuer MotorsSetSpeed
-	pwmL = (pwmL > PWM_MAX) ? PWM_MAX : pwmL;
-	pwmR = (pwmR > PWM_MAX) ? PWM_MAX : pwmR;
-	pwmL = (pwmL < -PWM_MAX) ? -PWM_MAX : pwmL;
-	pwmR = (pwmR < -PWM_MAX) ? -PWM_MAX : pwmR;
-
-	MotorsSetSpeed(abs(pwmL), abs(pwmR)); // Bleibt unverändert. Deine MotorsSetX() Funktionen müssen die Richtung setzen.
-
-	last_error_L = error_L;
-	last_error_R = error_R;
-}*/
-
 void UpdatePID() {
-	float kp_current, ki_current , kd_current;
+	float kp_current, kd_current;
 	if (isTurning) {
 		kp_current = KP_TURN;
-		ki_current = KI_TURN;
 		kd_current = KD_TURN;
 	} else {
 		kp_current = KP_STRAIGHT;
-		ki_current = KI_STRAIGHT;
 		kd_current = KD_STRAIGHT;
 	}
 
@@ -115,46 +56,33 @@ void UpdatePID() {
 	float delta_L = raw_current_pos_L_mm - last_abs_encoder_L;
 	float delta_R = raw_current_pos_R_mm - last_abs_encoder_R;
 
-    if (distanceGoal_L < 0) { // Wenn das Ziel rückwärts ist
-        signed_current_pos_L -= delta_L; // Subtrahiere das positive Delta, um signed_current_pos_L negativ zu machen
-    } else { // Wenn das Ziel vorwärts ist (oder 0)
-        signed_current_pos_L += delta_L; // Addiere das positive Delta
-    }
-
-    if (distanceGoal_R < 0) { // Wenn das Ziel rückwärts ist
-        signed_current_pos_R -= delta_R;
-    } else { // Wenn das Ziel vorwärts ist (oder 0)
-        signed_current_pos_R += delta_R;
-    }
+	if (currentMotorDirectionL == MOTOR_BACKWARD) {
+		signed_current_pos_L -= delta_L;
+	} else if (currentMotorDirectionL == MOTOR_FORWARD) {
+		signed_current_pos_L += delta_L;
+	}
+	if (currentMotorDirectionR == MOTOR_BACKWARD) {
+		signed_current_pos_R -= delta_R;
+	} else if (currentMotorDirectionR == MOTOR_FORWARD) {
+		signed_current_pos_R += delta_R;
+	}
 
 	// Fehlerberechnung für jedes Rad
 	float error_L = distanceGoal_L - signed_current_pos_L;
 	float error_R = distanceGoal_R - signed_current_pos_R;
 
-	// Integralanteile aktualisieren
-	integral_error_L += error_L;
-	integral_error_R += error_R;
-
-	// Integralbegrenzung
-	if (integral_error_L > INTEGRAL_LIMIT) integral_error_L = INTEGRAL_LIMIT;
-	if (integral_error_L < -INTEGRAL_LIMIT) integral_error_L = -INTEGRAL_LIMIT;
-	if (integral_error_R > INTEGRAL_LIMIT) integral_error_R = INTEGRAL_LIMIT;
-	if (integral_error_R < -INTEGRAL_LIMIT) integral_error_R = -INTEGRAL_LIMIT;
-
-	// P, I, D Anteile
+	// P, D Anteile
 	float proportionalCorrection_L = kp_current * error_L;
-	float integralCorrection_L = ki_current * integral_error_L;
 	float derivativeCorrection_L = kd_current * (error_L - last_error_L);
 
 	float proportionalCorrection_R = kp_current * error_R;
-	float integralCorrection_R = ki_current * integral_error_R;
 	float derivativeCorrection_R = kd_current * (error_R - last_error_R);
 
 	//TEST
-	float gleichlaufKorrektur = 0.0f; // Dies ist die Korrektur, die auf die PWMs angewendet wird
+	float gleichlaufKorrektur = 0.0f;
 	if (!isTurning) {
-		// Logik für Geradeausfahrt (wie bisher)
-		float gleichlaufError = signed_current_pos_R - signed_current_pos_L; // Vorzeichenbehafteter Fehler
+		// Logik für Geradeausfahrt
+		float gleichlaufError = signed_current_pos_R - signed_current_pos_L;
 
 		float p_gleichlauf = KP_GLEICHLAUF * gleichlaufError;
 		float d_gleichlauf = KD_GLEICHLAUF * (gleichlaufError - last_gleichlaufError);
@@ -162,41 +90,27 @@ void UpdatePID() {
 		gleichlaufKorrektur = p_gleichlauf + d_gleichlauf;
 		last_gleichlaufError = gleichlaufError;
 
-	} else { // Wir sind in einer Drehung (isTurning == true)
-		// NEU: Nur P-Regler für Dreh-Gleichlauf
-		// Fehler ist die Differenz der ABSOLUTEN Wege
+	} else {
+
 		float drehGleichlaufError = fabsf(signed_current_pos_R) - fabsf(signed_current_pos_L);
 
 		float p_dreh_gleichlauf = 750 * drehGleichlaufError;
 		gleichlaufKorrektur = p_dreh_gleichlauf; // Nur P-Anteil
 	}
 
+	float pwmL = proportionalCorrection_L + derivativeCorrection_L;
+	float pwmR = proportionalCorrection_R + derivativeCorrection_R;
 
-	/*float gleichlaufError = signed_current_pos_R - signed_current_pos_L;
-
-	float gleichlaufKorrektur = 0.0f;
-	if (!isTurning) {
-		float p_gleichlauf = KP_GLEICHLAUF * gleichlaufError;
-		float d_gleichlauf = KD_GLEICHLAUF * (gleichlaufError - last_gleichlaufError);
-
-		gleichlaufKorrektur = p_gleichlauf + d_gleichlauf;
-	}*/
-
-	float pwmL = proportionalCorrection_L + integralCorrection_L + derivativeCorrection_L;
-	float pwmR = proportionalCorrection_R + integralCorrection_R + derivativeCorrection_R;
-
-	// ----- ANWENDUNG DER RICHTUNGSABHÄNGIGEN KALIBRIERUNGSFAKTOREN -----
-	if (distanceGoal_L >= 0) { // Ziel ist vorwärts
-		pwmL *= PWM_L_FORWARD_FACTOR;
-	} else { // Ziel ist rückwärts
-		pwmL *= PWM_L_BACKWARD_FACTOR;
+	if (pwmL >= 0) { // Wenn der Regler vorwärts fahren will
+	    pwmL *= PWM_L_FORWARD_FACTOR;
+	} else { // Wenn der Regler rückwärts fahren will
+	    pwmL *= PWM_L_BACKWARD_FACTOR;
 	}
-	if (distanceGoal_R >= 0) { // Ziel ist vorwärts
-		pwmR *= PWM_R_FORWARD_FACTOR;
-	} else { // Ziel ist rückwärts
-		pwmR *= PWM_R_BACKWARD_FACTOR;
+	if (pwmR >= 0) { // Wenn der Regler vorwärts fahren will
+	    pwmR *= PWM_R_FORWARD_FACTOR;
+	} else { // Wenn der Regler rückwärts fahren will
+	    pwmR *= PWM_R_BACKWARD_FACTOR;
 	}
-	// ----- ENDE ANWENDUNG RICHTUNGSABHÄNGIGER FAKTOREN -----
 
 	// PWM-Werte begrenzen und sicherstellen, dass sie positiv sind fuer MotorsSetSpeed
 	pwmL = (pwmL > PWM_MAX) ? PWM_MAX : pwmL;
@@ -204,9 +118,6 @@ void UpdatePID() {
 	pwmL = (pwmL < -PWM_MAX) ? -PWM_MAX : pwmL;
 	pwmR = (pwmR < -PWM_MAX) ? -PWM_MAX : pwmR;
 
-	/*float pwm_L = pwmL + gleichlaufKorrektur;
-	float pwm_R = pwmR - gleichlaufKorrektur;
-	*/
 	float pwm_L, pwm_R;
 	if (!isTurning) {
 		// Anwendung für Geradeausfahrt: linkes Rad schneller, rechtes Rad langsamer bei positivem Fehler (R>L)
@@ -263,10 +174,7 @@ int PIDdone() {
 	float error_L = distanceGoal_L - current_pos_L_for_done;
 	float error_R = distanceGoal_R - current_pos_R_for_done;
 
-	// Gleichlauffehler für die PIDdone-Bedingung (ebenfalls mit vorzeichenbehafteter Position)
-	//float gleichlauferror_mm = current_pos_R_for_done - current_pos_L_for_done;
-
-	if (fabsf(error_L) < 2.0f && fabsf(error_R) < 2.0f) {
+	if (fabsf(error_L) < 5.0f && fabsf(error_R) < 5.0f) {
 		stableCycleCount++;
 		//LogPIDEntry(error_L, error_R, last_pwmL_calculated, last_pwmR_calculated, signed_current_pos_L, signed_current_pos_R, 1);
 		if (stableCycleCount >= CYCLES_THRESHOLD){
@@ -282,7 +190,7 @@ int PIDdone() {
 
 void ResetPID(){
     //DumpPIDLog();
-	for (volatile int i = 0; i < 1000000; i++) {}
+	Delay_ms(1000);
 	isTurning = 0;
 
 	EncoderReset();
@@ -294,7 +202,7 @@ void ResetPID(){
 	last_error_R = 0.0f;
 	last_error_L = 0.0f;
 
-	signed_current_pos_L = 0.0f; // Wichtig: Die interne PID-Position auf 0 setzen
+	signed_current_pos_L = 0.0f;
 	signed_current_pos_R = 0.0f;
 	last_abs_encoder_L = 0.0f;
 	last_abs_encoder_R = 0.0f;

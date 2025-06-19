@@ -1,4 +1,4 @@
-#include <Funktionsschnittstellen/pd_regler.h>
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <math.h>
@@ -6,10 +6,15 @@
 #include "Funktionsschnittstellen/sensors.h"
 #include "Funktionsschnittstellen/movement.h"
 #include "Funktionsschnittstellen/debug_comms.h"
+#include <Funktionsschnittstellen/pd_regler.h>
+#include <Funktionsschnittstellen/user_interface.h>
+#include "Funktionsschnittstellen/timer_utils.h"
 #include "Hardwaresteuerung/hal_ir.h"
 #include "Hardwaresteuerung/hal_us.h"
 #include "Hardwaresteuerung/hal_encoder.h"
 #include "Hardwaresteuerung/hal_motor.h"
+#include "Hardwaresteuerung/hal_digital_io.h"
+
 
 uint8_t UART_String[500];
 uint8_t DiagnosticSummaryString[100];
@@ -88,14 +93,14 @@ void SensorsInit(){
     UltrasoundStart();
 }
 
-void DebugPrint(){
+void SensorsPrint(){
 	float distanz_ultra = GetDistanceFront_mm();
 	int IR_L = GetDistanceLeft_mm();
 	int IR_R = GetDistanceRight_mm();
 	float count_L = GetEncoderLeft_mm();
 	float count_R = GetEncoderRight_mm();
-	sprintf((char*)UART_String,	" Ultraschall: %.2fmm IR_R: %dmm IR_L: %dmm  L: %.1fmm  R: %.1fmm \n\r", distanz_ultra, IR_R, IR_L, count_L, count_R);
-	UART_Transmit(&UART_COM, UART_String, sizeof(UART_String));	//Ausnahme weil wohin zu HAL?
+	int len = sprintf((char*)UART_String, " Ultraschall: %.2fmm IR_R: %dmm IR_L: %dmm  L: %.1fmm  R: %.1fmm \n\r", distanz_ultra, IR_R, IR_L, count_L, count_R);
+	Debug_Comms_SendBuffer(UART_String, len);
 }
 
 bool IsWallLeft(void) {
@@ -145,8 +150,6 @@ float GetEncoderRight_mm(void) {
 bool PerformDiagnosticCheck(void) {
 	const float MIN_ENCODER_DISTANCE_FOR_TEST = 10.0f;
 	const int DIAG_TEST_PWM = 3000;
-	// Warten auf US
-	for (volatile int i = 0; i < 5000000; i++) {}
     bool all_ok = true;
     int offset = 0;
     offset += sprintf((char*)UART_String + offset, "\033[H\033[2J");
@@ -184,10 +187,10 @@ bool PerformDiagnosticCheck(void) {
 
     EncoderReset();
     MotorsSetSpeed(DIAG_TEST_PWM, DIAG_TEST_PWM);
-	for (volatile int i = 0; i < 500000; i++) {}
+	Delay_ms(100);
     MotorsSetSpeed(0, 0);
 	MotorsSetSpeed(-DIAG_TEST_PWM, -DIAG_TEST_PWM);
-	for (volatile int i = 0; i < 500000; i++) {}
+	Delay_ms(100);
 	MotorsSetSpeed(0, 0);
 
     // Nach dem Test Encoder-Werte ablesen (jetzt sollten sie sich bewegt haben)
@@ -210,58 +213,22 @@ bool PerformDiagnosticCheck(void) {
     }
     // --- Abschließendes Ergebnis ---
     if (all_ok) {
-    	// Änern zu HAL:
-    	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_1);
-		DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_2);
-		for (volatile int i = 0; i < 500000; i++) {}
-		DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_1);
-		DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_2);
-		for (volatile int i = 0; i < 500000; i++) {}
-		DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_1);
-		DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_2);
-		for (volatile int i = 0; i < 500000; i++) {}
-		DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_1);
-		DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_2);
-		for (volatile int i = 0; i < 500000; i++) {}
+    	SignalDiagnosticsResult(all_ok);
     } else {
         // Bei Fehler: Finalen Fehlerbericht in den Haupt-Log-String schreiben
         offset += sprintf((char*)UART_String + offset, "DIAGNOSE: Einige Checks FEHLGESCHLAGEN. Anschlüsse untersuchen.\n\r");
     }
-    UART_Transmit(&UART_COM, UART_String, offset);
+    Debug_Comms_SendString((const char*)UART_String);
     if (!all_ok) {
-            // <<<<< NEUE VARIABLEN FÜR DIE STEUERUNG DER AUSGABEHÄUFIGKEIT
-            // Dieser Zähler wird in jedem Schleifendurchlauf erhöht.
             static unsigned int print_iteration_counter = 0;
-            // Dieser Wert bestimmt, nach wie vielen Schleifendurchläufen eine neue UART-Ausgabe erfolgt.
-            // Ein höherer Wert = seltenerer Print = bessere Lesbarkeit.
-            const unsigned int PRINT_UPDATE_INTERVAL = 5; // Beispiel: Alle 5 Schleifendurchläufe aktualisieren
-
+            const unsigned int PRINT_UPDATE_INTERVAL = 10; // Beispiel: Alle 5 Schleifendurchläufe aktualisieren
     		while (1) {
-    			// 1. Kontinuierliches alternierendes Blinken der LEDs
-                // DIESER TEIL LÄUFT IN JEDEM DURCHLAUF, SEHR OFT!
-    			DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_1);
-    			DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_2);
-    			for (volatile int i = 0; i < 200000; i++) {} // Kurzer Delay für Blinken
-    			DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_AUGE_2);
-    			DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_1);
-    			for (volatile int i = 0; i < 200000; i++) {} // Kurzer Delay für Blinken
-
-                // 2. Periodische UART-Ausgabe des DETALLIERTEN Berichts
-                // DIESER TEIL LÄUFT NUR JEDES "PRINT_UPDATE_INTERVAL"-te MAL!
+    			SignalDiagnosticsResult(all_ok);
                 if (print_iteration_counter >= PRINT_UPDATE_INTERVAL) {
-                	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_2);
-					DIGITAL_IO_SetOutputLow(&DIGITAL_IO_AUGE_1);
-                    // Sende den gesamten UART_String (der die ANSI-Codes für "Bildschirm löschen" am Anfang hat)
-                    UART_Transmit(&UART_COM, UART_String, offset);
-                    // LÄNGERER DELAY NACH DER AUSGABE FÜR BESSERE LESBARKEIT
-                    // Dieser Delay sorgt für eine Pause, nachdem der komplette Report gesendet wurde.
-                    // Passe diesen Wert an, bis es für dich angenehm zu lesen ist.
-                    for (volatile int i = 0; i < 5000000; i++) {} // Erhöhter Delay, z.B. 1.5 Millionen Zyklen
+					Debug_Comms_SendString((const char*)UART_String);
+                    //for (volatile int i = 0; i < 5000000; i++) {} // Erhöhter Delay, z.B. 1.5 Millionen Zyklen
                     print_iteration_counter = 0; // Zähler zurücksetzen, um den nächsten Zählzyklus zu starten
                 } else {
-                    // Kleinerer Delay in den Durchläufen, in denen NICHT gedruckt wird.
-                    // Das sorgt dafür, dass die LED-Blinkfrequenz relativ konstant bleibt
-                    // und der Microcontroller nicht 100% ausgelastet ist, wenn die Hauptausgabe selten ist.
                     for (volatile int int_delay_loop = 0; int_delay_loop < 50000; int_delay_loop++) {}
                 }
 
@@ -270,5 +237,7 @@ bool PerformDiagnosticCheck(void) {
         }
     return all_ok;
 }
+
+
 
 

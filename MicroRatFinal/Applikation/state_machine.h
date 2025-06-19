@@ -8,6 +8,8 @@
 #ifndef APPLIKATION_STATE_MACHINE_H_
 #define APPLIKATION_STATE_MACHINE_H_
 
+#define NO_WALL_TIMEOUT_THRESHOLD 2
+
 typedef enum {
 	STATE_IDLE,
 	STATE_EXPLORE,
@@ -21,15 +23,9 @@ typedef enum {
     TURN_RIGHT
 } TurnMouse;
 
-extern volatile RatState currentState; // Deklaration, Definition in .c
+extern volatile RatState currentState;
 
 void RatStateMachine_Update(void);
-void sendReportViaUART(void);
 
-bool IsStartButtonPressed();
-
-//-----------------------------
-void TargetReached(void);
-void SignalOptmisationComplete(void);
 
 #endif /* APPLIKATION_STATE_MACHINE_H_ */

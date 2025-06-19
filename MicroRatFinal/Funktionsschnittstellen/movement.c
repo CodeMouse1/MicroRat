@@ -9,14 +9,10 @@
 #include "Hardwaresteuerung/hal_ir.h"
 #include "Hardwaresteuerung/hal_encoder.h"
 
-float KP_STRAIGHT = 23.0;
+float KP_STRAIGHT = 43.0;	//23
 
 volatile bool isTurning = false;
 volatile bool hasRecalibrated = false;
-
-void MovementInit(){
-	MotorsSetForward();
-}
 
 void MoveOneCell(){
 	EncoderReset();
@@ -69,11 +65,11 @@ void RecalibrateAndMoveForward(){
 	EncoderReset(); // Encoder zurückgesetzt nach der Rückwärtsbewegung
 	//MotorsSetForward();
 	setPIDGoalD(40,40); // Ziel für eine Zelle vorwärts = 2cm
-	KP_STRAIGHT = 100;
+	KP_STRAIGHT = 150;
 	TIMER_Start(&TIMER_REGLER);
 	while (!PIDdone()) {} // Warte, bis die Vorwärtsbewegung abgeschlossen ist
 	ResetPID(); // Setze PID für die nächste Bewegung zurück
-	KP_STRAIGHT = 23.0;
+	KP_STRAIGHT = 43.0;
 }
 
 void Stop(){
@@ -84,7 +80,7 @@ void Turn (TurnDirection direction){
 	EncoderReset();
 	float goal_distance_L = 0.0f;
 	float goal_distance_R = 0.0f;
-	float distance_90_deg = 70.0;//DISTANCE_PER_90_DEGREE_MM;
+	float distance_90_deg = DISTANCE_PER_90_DEGREE_MM;
 	if(direction == left){
 		goal_distance_L = -distance_90_deg;
 		goal_distance_R = distance_90_deg;

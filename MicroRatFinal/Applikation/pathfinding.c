@@ -1,8 +1,10 @@
 /*
  * pathfinding.c
  *
- *  Created on: 17 Apr 2025
- *      Author: marcu
+ * Verantwortlich für die Labyrinth-Navigationsalgorithmen.
+ * Berechnet Distanzkarten (Flood Fill) und plant Bewegungen.
+ * Implementiert den Wall Follower und die Ausführung des kürzesten Pfades.
+ * Nutzt Sensordaten und steuert die Bewegung des Roboters.
  */
 #include <stdbool.h>
 #include "Applikation/maze.h"
@@ -11,7 +13,6 @@
 #include "Funktionsschnittstellen/sensors.h"
 #include "Funktionsschnittstellen/movement.h"
 
-//#include "Hardwaresteuerung/hal_motor.h"
 
 static Cell queue[QUEUE_SIZE];
 

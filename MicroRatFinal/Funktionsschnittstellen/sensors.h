@@ -22,7 +22,7 @@
 #define IR_SENSOR_OFFSET_RIGHT_TO_WHEEL_MM 18
 
 void SensorsInit(void);
-void DebugPrint(void);
+void SensorsPrint(void);
 
 bool IsWallLeft(void);
 bool IsWallRight(void);

@@ -8,6 +8,15 @@
 #ifndef HARDWARESTEUERUNG_HAL_MOTOR_H_
 #define HARDWARESTEUERUNG_HAL_MOTOR_H_
 
+typedef enum {
+    MOTOR_STOPPED,
+    MOTOR_FORWARD,
+    MOTOR_BACKWARD
+} MotorDirection;
+
+extern volatile MotorDirection currentMotorDirectionL;
+extern volatile MotorDirection currentMotorDirectionR;
+
 void MotorsSetForward(void);
 void MotorsSetRight(void);
 void MotorsSetLeft(void);

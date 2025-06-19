@@ -1,8 +1,10 @@
 /*
  * maze.c
  *
- *  Created on: 19 May 2025
- *      Author: marcu
+ * Verwaltet die interne Darstellung des Labyrinths (Wände, Distanzen).
+ * Aktualisiert die Karte basierend auf Sensorinformationen.
+ * Stellt Funktionen zur Abfrage der Karteninformationen bereit.
+ * Nutzt die Debug-Kommunikationsschicht für die Visualisierung der Karte.
  */
 #include <stdio.h>
 #include <stdint.h>
@@ -11,7 +13,6 @@
 #include "Applikation/state_machine.h"
 #include "Funktionsschnittstellen/sensors.h"
 #include "Funktionsschnittstellen/debug_comms.h"
-
 
 
 // Puffer für die Ausgabe von Strings über UART
@@ -72,30 +73,9 @@ void updateMazeMap(int currentX, int currentY, int currentOrientation) {
     mazeMap[currentY][currentX] = cellInfo; // Speichern der aktualisierten Infos
 }
 
-/*void printMazeMap(void) {
-	UART_Transmit(&UART_COM, (uint8_t*)"Labyrinth Karte:\n\r", sizeof("Labyrinth Karte:\n\r") - 1);
-	// Gehe Zellenweise durch das Labyrinth (von oben nach unten, wie in deinem Skript)
-	for (int y = MAZE_HEIGHT - 1; y >= 0; y--) { // Y-Achse umgekehrt für Top-Down-Darstellung
-		for (int x = 0; x < MAZE_WIDTH; x++) {
-			// Format: [Y][X]:MAZE_MAP_VALUE:DISTANCE_MAP_VALUE,
-			// Beispiel: [3][6]:10:0, (Zelle 6,3 hat MazeMap Wert 10 und Distanz 0)
-			// Wenn eine Zelle unerreichbar ist, nutzen wir UNVISITED_DISTANCE
-			sprintf((char*)UART_MapString, "[%d][%d]:%d:%d,",
-					y,
-					x,
-					mazeMap[y][x],
-					distanceMap[y][x]); // NEU: distanceMap Wert hinzugefügt
-			UART_Transmit(&UART_COM, UART_MapString, strlen((char*)UART_MapString));
-		}
-		// Zeilenumbruch nach jeder Labyrinth-Reihe
-		UART_Transmit(&UART_COM, (uint8_t*)"\n\r", sizeof("\n\r") - 1);
-	}
-	// Eine zusätzliche Leerzeile signalisiert das Ende des Datenblocks für dein Python-Skript
-	UART_Transmit(&UART_COM, (uint8_t*)"\n\r", sizeof("\n\r") - 1);
-}*/
 void printMazeMap(void) {
     // Nun nutzen wir die abstrahierte Kommunikationsschicht
-    Debug_Comms_SendString("Labyrinth Karte:\n\r"); // <-- Geändert!
+    Debug_Comms_SendString("Labyrinth Karte:\n\r");
 
     for (int y = MAZE_HEIGHT - 1; y >= 0; y--) {
         for (int x = 0; x < MAZE_WIDTH; x++) {
@@ -104,11 +84,11 @@ void printMazeMap(void) {
                     x,
                     mazeMap[y][x],
                     distanceMap[y][x]);
-            Debug_Comms_SendString((char*)UART_MapString); // <-- Geändert!
+            Debug_Comms_SendString((char*)UART_MapString);
         }
-        Debug_Comms_SendString("\n\r"); // <-- Geändert!
+        Debug_Comms_SendString("\n\r");
     }
-    Debug_Comms_SendString("\n\r"); // <-- Geändert!
+    Debug_Comms_SendString("\n\r");
 }
 
 // Hilfsfunktion, um zu prüfen, ob eine Zelle innerhalb des Labyrinths liegt
