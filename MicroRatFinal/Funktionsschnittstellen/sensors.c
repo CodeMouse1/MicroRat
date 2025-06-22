@@ -149,7 +149,7 @@ float GetEncoderRight_mm(void) {
 
 bool PerformDiagnosticCheck(void) {
 	const float MIN_ENCODER_DISTANCE_FOR_TEST = 10.0f;
-	const int DIAG_TEST_PWM = 3000;
+	const int DIAG_TEST_PWM = 3500;
     bool all_ok = true;
     int offset = 0;
     offset += sprintf((char*)UART_String + offset, "\033[H\033[2J");

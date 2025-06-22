@@ -78,39 +78,21 @@ void UpdatePID() {
 	float proportionalCorrection_R = kp_current * error_R;
 	float derivativeCorrection_R = kd_current * (error_R - last_error_R);
 
-	//TEST
 	float gleichlaufKorrektur = 0.0f;
 	if (!isTurning) {
-		// Logik für Geradeausfahrt
 		float gleichlaufError = signed_current_pos_R - signed_current_pos_L;
-
-		float p_gleichlauf = KP_GLEICHLAUF * gleichlaufError;
-		float d_gleichlauf = KD_GLEICHLAUF * (gleichlaufError - last_gleichlaufError);
-
-		gleichlaufKorrektur = p_gleichlauf + d_gleichlauf;
+		gleichlaufKorrektur = KP_GLEICHLAUF * gleichlaufError;
 		last_gleichlaufError = gleichlaufError;
 
 	} else {
 
 		float drehGleichlaufError = fabsf(signed_current_pos_R) - fabsf(signed_current_pos_L);
 
-		float p_dreh_gleichlauf = 750 * drehGleichlaufError;
-		gleichlaufKorrektur = p_dreh_gleichlauf; // Nur P-Anteil
+		gleichlaufKorrektur = KP_GLEICHLAUF * drehGleichlaufError;
 	}
 
 	float pwmL = proportionalCorrection_L + derivativeCorrection_L;
 	float pwmR = proportionalCorrection_R + derivativeCorrection_R;
-
-	if (pwmL >= 0) { // Wenn der Regler vorwärts fahren will
-	    pwmL *= PWM_L_FORWARD_FACTOR;
-	} else { // Wenn der Regler rückwärts fahren will
-	    pwmL *= PWM_L_BACKWARD_FACTOR;
-	}
-	if (pwmR >= 0) { // Wenn der Regler vorwärts fahren will
-	    pwmR *= PWM_R_FORWARD_FACTOR;
-	} else { // Wenn der Regler rückwärts fahren will
-	    pwmR *= PWM_R_BACKWARD_FACTOR;
-	}
 
 	// PWM-Werte begrenzen und sicherstellen, dass sie positiv sind fuer MotorsSetSpeed
 	pwmL = (pwmL > PWM_MAX) ? PWM_MAX : pwmL;
@@ -174,7 +156,7 @@ int PIDdone() {
 	float error_L = distanceGoal_L - current_pos_L_for_done;
 	float error_R = distanceGoal_R - current_pos_R_for_done;
 
-	if (fabsf(error_L) < 5.0f && fabsf(error_R) < 5.0f) {
+	if (fabsf(error_L) <= 5.0f && fabsf(error_R) <= 5.0f) {
 		stableCycleCount++;
 		//LogPIDEntry(error_L, error_R, last_pwmL_calculated, last_pwmR_calculated, signed_current_pos_L, signed_current_pos_R, 1);
 		if (stableCycleCount >= CYCLES_THRESHOLD){
@@ -190,7 +172,7 @@ int PIDdone() {
 
 void ResetPID(){
     //DumpPIDLog();
-	Delay_ms(1000);
+	Delay_ms(500);
 	isTurning = 0;
 
 	EncoderReset();

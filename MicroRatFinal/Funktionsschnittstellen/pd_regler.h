@@ -2,25 +2,16 @@
 #ifndef FUNKTIONSSCHNITTSTELLEN_PD_REGLER_H_
 #define FUNKTIONSSCHNITTSTELLEN_PD_REGLER_H_
 
-#include <stdbool.h>
-
-#define PWM_L_FORWARD_FACTOR    1.0f//1.003f
-#define PWM_L_BACKWARD_FACTOR   1.0f//1.05f
-#define PWM_R_FORWARD_FACTOR    1.0f//0.975f
-#define PWM_R_BACKWARD_FACTOR   1.0f//0.95f
-
 #define PWM_MAX 3300
-#define CYCLES_THRESHOLD 50
-#define INTEGRAL_LIMIT 3000
+#define CYCLES_THRESHOLD 1
 
-#define KP_GLEICHLAUF 500.0f
-#define KD_GLEICHLAUF 0.0f
+#define KP_GLEICHLAUF 1000.0f
 
-#define KP_TURN 85.0f//78.0f
+#define KP_TURN 84.0f//85.0f
 #define KD_TURN 10.0f//50.0f
 
 extern float KP_STRAIGHT;
-#define KD_STRAIGHT 25.0f//50.0f
+#define KD_STRAIGHT 15.0f//50.0f
 
 extern volatile bool isTurning;
 

@@ -5,11 +5,12 @@
 #include "Funktionsschnittstellen/movement.h"
 #include "Funktionsschnittstellen/sensors.h"
 #include "Funktionsschnittstellen/pd_regler.h"
+#include "Funktionsschnittstellen/timer_utils.h"
 #include "Hardwaresteuerung/hal_motor.h"
 #include "Hardwaresteuerung/hal_ir.h"
 #include "Hardwaresteuerung/hal_encoder.h"
 
-float KP_STRAIGHT = 43.0;	//23
+float KP_STRAIGHT = 42.0;
 
 volatile bool isTurning = false;
 volatile bool hasRecalibrated = false;
@@ -29,6 +30,35 @@ void MoveOneCell(){
 	hasRecalibrated = false;
 }
 
+/**
+ * @brief Bewegt MicroRat eine spezifizierte Anzahl von Labyrinthzellen vorwärts.
+ * @param numCells Die Anzahl der Zellen, die gefahren werden sollen.
+ *
+ * @note WIP: Diese Funktion ist eine neue Implementierung für den optimierten
+ * Schnelllauf und erfordert noch sorgfältige Kalibrierung
+ * von MM_PER_CELL_REFERENCE sowie umfassende Tests im Labyrinth.
+ * Fehlerakkumulation über lange Strecken ist zu überwachen.
+ */
+void MoveMultipleCells(int numCells){
+    if (numCells <= 0) {
+        return;
+    }
+
+    EncoderReset();
+    isTurning = false;
+
+    // Berechne die Zieldistanz: Anzahl der Zellen * feste Referenz-Zellengröße
+    float distanceToDrive = (float)numCells * 150.0f;
+
+    setPIDGoalD(distanceToDrive, distanceToDrive);
+    TIMER_Start(&TIMER_REGLER);
+
+    while (!PIDdone()) {
+    }
+    ResetPID();
+    hasRecalibrated = false;
+}
+
 float EstimateCellSize() {
     float measuredDistance = GetDistanceFront_mm();
 
@@ -38,7 +68,7 @@ float EstimateCellSize() {
 
     float usableDistance = measuredDistance - MIN_WALL_DISTANCE;
 
-    if (measuredDistance <= (MM_PER_CELL_REFERENCE + 50.0f)) {
+    if (measuredDistance <= (MM_PER_CELL_REFERENCE + 80.0f)) {
 
 		return usableDistance;
 	}
@@ -59,8 +89,8 @@ float EstimateCellSize() {
 void RecalibrateAndMoveForward(){
 	// --- Rückwärtsfahren für die Rekalibrierung ---
 	//MotorsSetReverse();
-	MotorsSetSpeed(-3000, -3000);
-	for (volatile int i = 0; i < 3000000; i++){} // Einfache Zeitverzögerung für Rückwärtsfahrt
+	MotorsSetSpeed(-3250, -3250);
+	Delay_ms(1000);
 	MotorsSetSpeed(0, 0);
 	EncoderReset(); // Encoder zurückgesetzt nach der Rückwärtsbewegung
 	//MotorsSetForward();
@@ -69,7 +99,7 @@ void RecalibrateAndMoveForward(){
 	TIMER_Start(&TIMER_REGLER);
 	while (!PIDdone()) {} // Warte, bis die Vorwärtsbewegung abgeschlossen ist
 	ResetPID(); // Setze PID für die nächste Bewegung zurück
-	KP_STRAIGHT = 43.0;
+	KP_STRAIGHT = 42.0;
 }
 
 void Stop(){
@@ -80,7 +110,7 @@ void Turn (TurnDirection direction){
 	EncoderReset();
 	float goal_distance_L = 0.0f;
 	float goal_distance_R = 0.0f;
-	float distance_90_deg = DISTANCE_PER_90_DEGREE_MM;
+	float distance_90_deg = 69;//DISTANCE_PER_90_DEGREE_MM;
 	if(direction == left){
 		goal_distance_L = -distance_90_deg;
 		goal_distance_R = distance_90_deg;
