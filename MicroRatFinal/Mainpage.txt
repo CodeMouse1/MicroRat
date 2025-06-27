@@ -1,0 +1,19 @@
+/**
+ * @mainpage MicroRat: Eine autonome Micromouse-Plattform
+ *
+ * @brief Dieses Projekt entwickelt eine autonome Micromouse, die in der Lage ist, ein unbekanntes Labyrinth selbstständig zu erkunden, eine interne Karte zu erstellen und anschließend den optimalen Pfad zu einer vorgegebenen Zielzelle zu finden und auszuführen.
+ *
+ * @details Die Micromouse nutzt diverse Sensorik, darunter Infrarotsensoren und Ultraschallsensor zur präzisen Wandabstandsmessung und Encoder zur hochauflösenden Odometrie. Ihre Bewegungskontrolle erfolgt mittels eines robusten Proportional-Differential (PD)-Regelsystems, welches exakte Motorbewegungen gewährleistet. Die Navigation basiert auf fortschrittlichen Pfadfindungsalgorithmen, darunter Flood Fill für den optimalen Pfad innerhalb des Labyrinths und Wall Follower für die initiale Exploration.
+ *
+ * Die Softwarearchitektur ist modular konzipiert und in distinkte Schichten unterteilt, die von der Anwendungslogik bis zur Hardware-Interaktion reichen:
+ * - **Applikationsschicht:** Dies ist die oberste Schicht, die die übergeordnete Steuerlogik enthält. Hier finden sich die Module für die Labyrinthkartierung, die Implementierung der Pfadfindungsalgorithmen und das umfassende Roboter-Zustandsmanagement.
+ * - **Funktionale Schnittstellen:** Diese Module implementieren grundlegende Dienste, welche von der Applikationsschicht genutzt werden. Hierzu gehören die PD-Regelung, präzise Bewegungskommandos und die optimierte Verarbeitung von Sensordaten.
+ * - **Hardware-Abstraktionsschicht (HAL):** Diese unterste Schicht kapselt plattformspezifische Hardware-Treiber und Funktionalitäten, basierend auf Frameworks wie den DAVE APIs, für Motoren, Sensoren und Timer. Sie bietet eine saubere und systemunabhängige Schnittstelle zu der darunterliegenden Elektronik.
+ *
+ * Dieses umfassende und schichtbasierte Design zielt darauf ab, robusten und wartbaren Quellcode zu schaffen, der eine hohe Präzision und Effizienz bei der Labyrinthdurchquerung und -lösung ermöglicht. Darüber hinaus ist das Projekt explizit als praktisches Lehrwerkzeug für Studierende des Studienganges Elektromobilität konzipiert, um einen fundierten Einstieg in die autonome Navigation und Robotik zu bieten.
+ *
+ * @author Marcus Stake Alvarado
+ * @date 2025-06-27
+ * @version 1.0
+ * @note Der vollständige Quellcode und weitere Informationen zu diesem Projekt sind im GitLab-Repository verfügbar: https://gitlab.bht-berlin.de/s88832/microrat-technical-documentation
+ */

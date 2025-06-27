@@ -1,4 +1,4 @@
-/*
+/**
  * @file maze.c
  * @brief Verwaltet die interne Darstellung und Interaktion mit dem Labyrinth.
  *
@@ -6,23 +6,23 @@
  * in der 'mazeMap' (welche Wände bekannt sind) und der 'distanceMap'
  * (berechnete Distanzen zum Ziel). Es aktualisiert die Karte basierend
  * auf aktuellen Sensordaten während der Erkundung und stellt Funktionen
- * bereit, um Labyrinthinformationen abzufragen (z.B. 'asWallBetween').
+ * bereit, um Labyrinthinformationen abzufragen (z.B. 'MazeMap_HasWallBetween').
  *
  * Es bildet das zentrale "Gedächtnis" der MicroRat über die erkundete Umgebung
  * und unterstützt die Pfadfindungsalgorithmen, indem es eine präzise
- * und aktuelle Darstellung des Labyrinths liefert. Die 'printMazeMap'-Funktion
+ * und aktuelle Darstellung des Labyrinths liefert. Die 'MazeMap_Print'-Funktion
  * nutzt die Debug-Kommunikationsschicht zur Visualisierung des aktuellen
  * Kartenzustands.
  *
  * @author Marcus Stake Alvarado
- * @date 2025-06-22
+ * @date 2025-06-26
  * @version 1.0
  *
  * @dependencies
  * - Applikation/maze.h: Deklarationen für dieses Modul
- * - Applikation/pathfinding.h: Für die Nutzung der distanceMap und MazeMap_Init
+ * - Applikation/pathfinding.h: Für die Nutzung der distanceMap
  * - Applikation/state_machine.h: Für allgemeine Zustandsinformationen wie aktuelle Position und Orientierung
- * - Funktionsschnittstellen/sensors.h: Für die Abfrage der Wandsensoren (IsWallFront, IsWallLeft, IsWallRight)
+ * - Funktionsschnittstellen/sensors.h: Für die Abfrage ob Wände präsent sind
  * - Funktionsschnittstellen/debug_comms.h: Für die Ausgabe der Karte zu Debugging-Zwecken
  */
 #include <stdio.h>
@@ -33,15 +33,41 @@
 #include "Funktionsschnittstellen/sensors.h"
 #include "Funktionsschnittstellen/debug_comms.h"
 
-
-// Puffer für die Ausgabe von Strings über UART
+/**
+ * @brief Puffer zum Formatieren von Karten-Debug-Strings für die UART-Ausgabe.
+ *
+ * Dieser Puffer wird von MazeMap_Print verwendet, um Zellinformationen
+ * vor dem Senden über die Debug-Kommunikationsschicht zwischenzuspeichern.
+ */
 uint8_t UART_MapString[100];
 
-// Globale 2D-Arrays zur Speicherung der Labyrinthdaten:
+/**
+ * @brief Die Hauptkarte des Labyrinths, die bekannte Wände speichert.
+ *
+ * Jede Zelle 'mazeMap[y][x]' enthält eine Bitmaske, die anzeigt,
+ * welche Wände (Nord, Ost, Süd, West) in dieser Zelle bekannt sind.
+ * Die Definition der Bits ist in 'MazeMap_Update' beschrieben.
+ * @see MazeMap_Update
+ * @see MAZE_HEIGHT
+ * @see MAZE_WIDTH
+ */
 int mazeMap[MAZE_HEIGHT][MAZE_WIDTH];
+
+/**
+ * @brief Die Distanzkarte des Labyrinths, die die minimale Anzahl der Schritte zum Ziel speichert.
+ *
+ * Jede Zelle 'distanceMap[y][x]' enthält den numerischen Wert der **minimalen Anzahl von Zellschritten**,
+ * die der MicroRat von dieser Zelle aus benötigt, um das definierte Ziel im Labyrinth zu erreichen.
+ * Diese Karte wird dynamisch durch einen **Flood-Fill-Algorithmus** berechnet und aktualisiert,
+ * basierend auf der aktuellen Labyrinthkenntnis.
+ *
+ * @see Pathfinding_CalculateDistanceMap
+ * @see MAZE_HEIGHT
+ * @see MAZE_WIDTH
+ */
 int distanceMap[MAZE_HEIGHT][MAZE_WIDTH];
 
-/*
+/**
  * @brief Initialisiert die Labyrinthkarte.
  *
  * Setzt alle Zellen in der 'mazeMap' auf 0, was bedeutet, dass
@@ -55,12 +81,12 @@ void MazeMap_Init(void) {
     }
 }
 
-/*
+/**
  * @brief Aktualisiert die Labyrinthkarte mit den aktuellen Sensordaten.
  *
  * Liest die Zustände der Front-, Links- und Rechtssensoren aus und speichert
  * die erkannten Wände in der 'mazeMap' für die aktuelle Zelle,
- * basierend auf der aktuellen Orientierung der Rat.
+ * basierend auf der aktuellen Orientierung der MicroRat.
  *
  * Die Bits in 'mazeMap[y][x]' repräsentieren die Wände der Zelle:
  * Bit 0: Nordwand (N)
@@ -68,17 +94,16 @@ void MazeMap_Init(void) {
  * Bit 2: Südwand (S)
  * Bit 3: Westwand (W)
  *
- * @param currentX Die aktuelle X-Koordinate der Rat.
- * @param currentY Die aktuelle Y-Koordinate der Rat.
- * @param currentOrientation Die aktuelle Ausrichtung der Rat (NORTH, EAST, SOUTH, WEST).
+ * @param currentX Die aktuelle X-Koordinate der MicroRat.
+ * @param currentY Die aktuelle Y-Koordinate der MicroRat.
+ * @param currentOrientation Die aktuelle Ausrichtung der MicroRat (NORTH, EAST, SOUTH, WEST).
  */
-void updateMazeMap(int currentX, int currentY, int currentOrientation) {
+void MazeMap_Update(int currentX, int currentY, int currentOrientation) {
     // Hole die aktuellen Wandinformationen der Zelle, bevor neue hinzugefügt werden.
     int cellInfo = mazeMap[currentY][currentX];
     bool frontWall = IsWallFront();
     bool leftWall = IsWallLeft();
     bool rightWall = IsWallRight();
-
     // Die entsprechenden Bits in 'cellInfo' setzen oder löschen basierend auf der Ausrichtung
     switch (currentOrientation) {
         case NORTH:
@@ -105,16 +130,15 @@ void updateMazeMap(int currentX, int currentY, int currentOrientation) {
     mazeMap[currentY][currentX] = cellInfo; // Aktualisierte Wandinformationen speichern
 }
 
-/*
+/**
  * @brief Gibt die aktuelle Labyrinth- und Distanzkarte über die Debug-Kommunikationsschicht aus.
  *
  * Formatiert die Informationen jeder Zelle (Koordinaten, bekannte Wände, Distanz zum Ziel)
- * und sendet sie zeilenweise über UART. Dies ist nützlich für das Debugging und die
- * Visualisierung des Erkundungs- und Pfadfindungsfortschritts.
- * @note Eine bessere Visualisierung ist mittels eines externen "Maze Visualiser" Tools möglich
+ * und sendet sie zeilenweise über UART.
+ * @note Eine bessere Visualisierung ist mittels des externen "MazeVisualizer" Tools möglich
  */
-void printMazeMap(void) {
-    // Sende einen Header, um die Ausgabe im Terminal zu identifizieren (MazeVisualiser).
+void MazeMap_Print(void) {
+    // Sende einen Header, um die Ausgabe im Terminal zu identifizieren (MazeVisualizer).
     Debug_Comms_SendString("Labyrinth Karte:\n\r");
     // Iteriere von der oberen Reihe des Labyrinths (höchster Y-Wert) zur unteren (Y=0),
 	// um eine intuitive top-down Ansicht zu erhalten.
@@ -133,17 +157,17 @@ void printMazeMap(void) {
     Debug_Comms_SendString("\n\r");
 }
 
-/*
+/**
  * @brief Prüft, ob eine Zelle innerhalb der definierten Labyrinthusgrenzen liegt.
  * @param x Die X-Koordinate der zu prüfenden Zelle.
  * @param y Die Y-Koordinate der zu prüfenden Zelle.
  * @return true, wenn die Zelle innerhalb der Grenzen liegt; false sonst.
  */
-bool isValidCell(int x, int y) {
+bool MazeMap_IsValidCell(int x, int y) {
     return x >= 0 && x < MAZE_WIDTH && y >= 0 && y < MAZE_HEIGHT;
 }
 
-/*
+/**
  * @brief Prüft, ob eine bekannte Wand zwischen zwei benachbarten Zellen existiert.
  *
  * Diese Funktion ist entscheidend für Pfadfindungsalgorithmen, um zu bestimmen,
@@ -158,9 +182,9 @@ bool isValidCell(int x, int y) {
  * @param y2 Die Y-Koordinate der zweiten (benachbarten) Zelle.
  * @return true, wenn eine Wand zwischen den Zellen bekannt ist oder eine Zelle ungültig ist; false sonst.
  */
-bool hasWallBetween(int x1, int y1, int x2, int y2) {
+bool MazeMap_HasWallBetween(int x1, int y1, int x2, int y2) {
     // 1. Zuerst prüfen, ob die Zellen überhaupt gültig sind
-    if (!isValidCell(x1, y1) || !isValidCell(x2, y2)) {
+    if (!MazeMap_IsValidCell(x1, y1) || !MazeMap_IsValidCell(x2, y2)) {
         return true;
     }
     // 2. Wenn die Zellen identisch sind, gibt es keine Wand dazwischen

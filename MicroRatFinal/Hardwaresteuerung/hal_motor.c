@@ -1,55 +1,55 @@
-/*
- * hal_motor.c
+/**
+ * @file hal_motor.c
+ * @brief Implementierung der Hardware-Abstraktionsschicht (HAL) für die Ansteuerung der Motor-H-Brücken.
  *
- *  Created on: 17 Apr 2025
- *      Author: marcu
+ * Dieses Modul stellt die direkte Schnittstelle zur Steuerung der **H-Brücken** dar,
+ * die wiederum die Gleichstrommotoren des MicroRats antreiben.
+ * Es kapselt die spezifischen HAL-Funktionen für digitale Ein-/Ausgänge (GPIO)
+ * zur Richtungskontrolle und Pulsweitenmodulation (PWM) zur Geschwindigkeitskontrolle,
+ * die vom DAVE-Framework bereitgestellt werden.
+ * Es ermöglicht die unabhängige Einstellung von Fahrtrichtung und Geschwindigkeit für jeden Motor.
+ *
+ * @author Marcus Stake Alvarado
+ * @date 2025-06-26
+ * @version 1.0
+ *
+ * @dependencies
+ * - <stdlib.h>: Für die 'abs()'-Funktion
+ * - "DAVE.h": Das Haupt-Header-File des DAVE-Frameworks, das die notwendigen
+ * Definitionen und Funktionsprototypen für die Peripheriesteuerung (DIGITAL_IO_, PWM_) bereitstellt
+ * - "Hardwaresteuerung/hal_motor.h": Deklarationen der öffentlichen Schnittstellen dieses Moduls
  */
 #include <stdlib.h>
 #include "Dave.h"
 #include "Hardwaresteuerung/hal_motor.h"
 
-void MotorsSetForward(){
-	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_1);
-	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_2);
-	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_3);
-	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_4);
-}
-void MotorsSetLeft(){
-	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_1);
-	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_2);
-	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_3);
-	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_4);
-}
-void MotorsSetRight(){
-	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_1);
-	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_2);
-	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_3);
-	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_4);
-}
-void MotorsSetReverse(){
-	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_1);
-	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_2);
-	DIGITAL_IO_SetOutputHigh(&DIGITAL_IO_INPUT_3);
-	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_4);
-}
+volatile MotorDirection currentMotorDirectionL = MOTOR_STOPPED;	///- Speichert die aktuelle Fahrtrichtung des linken Motors.
+volatile MotorDirection currentMotorDirectionR = MOTOR_STOPPED;	///- Speichert die aktuelle Fahrtrichtung des rechten Motors.
 
-void MotorsStop(){
-	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_1);
-	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_2);
-	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_3);
-	DIGITAL_IO_SetOutputLow(&DIGITAL_IO_INPUT_4);
-}
-
-void MotorsDrive(){
-	PWM_SetDutyCycle(&PWM_R, 3000);
-	PWM_SetDutyCycle(&PWM_L, 3000);
-	PWM_Start(&PWM_R);
-	PWM_Start(&PWM_L);
-}
-
-volatile MotorDirection currentMotorDirectionL = MOTOR_STOPPED;
-volatile MotorDirection currentMotorDirectionR = MOTOR_STOPPED;
-
+/**
+ * @brief Stellt die Geschwindigkeit und Richtung beider Motoren ein.
+ *
+ * Diese zentrale Funktion zur Motorsteuerung setzt sowohl die Fahrtrichtung
+ * als auch die PWM-Geschwindigkeit für den linken und rechten Motor.
+ * Positive Werte bedeuten Vorwärtsfahrt, negative Werte Rückwärtsfahrt,
+ * und 0 stoppt den jeweiligen Motor.
+ *
+ * @param speedL Die gewünschte Geschwindigkeit für den linken Motor.
+ * Positiv für Vorwärts, negativ für Rückwärts, 0 für Stopp.
+ * Der Betrag entspricht dem PWM-Duty-Cycle-Wert.
+ * @param speedR Die gewünschte Geschwindigkeit für den rechten Motor.
+ * Positiv für Vorwärts, negativ für Rückwärts, 0 für Stopp.
+ * Der Betrag entspricht dem PWM-Duty-Cycle-Wert.
+ * @note Die PWM-Werte sind plattformspezifisch und hängen von der Konfiguration
+ * des PWM-Moduls ab
+ * @see DIGITAL_IO_INPUT_1
+ * @see DIGITAL_IO_INPUT_2
+ * @see DIGITAL_IO_INPUT_3
+ * @see DIGITAL_IO_INPUT_4
+ * @see PWM_L
+ * @see PWM_R
+ * @see MotorDirection
+ */
 void MotorsSetSpeed(int speedL, int speedR) {
     // --- Linker Motor ---
     if (speedL > 0) {
@@ -97,6 +97,12 @@ void MotorsSetSpeed(int speedL, int speedR) {
     }
 }
 
+/**
+ * @brief Stoppt beide Motoren und signalisiert das Ende der Regleraktivität.
+ *
+ * Diese Funktion setzt die Geschwindigkeit beider Motoren sofort auf Null und
+ * stoppt typischerweise auch den Timer, der den übergeordneten PD-Regler periodisch aufruft.
+ */
 void StopAndSignal(){
 	MotorsSetSpeed(0,0);
 	TIMER_Stop(&TIMER_REGLER);

@@ -1,32 +1,63 @@
-#include <stdio.h>
+/**
+ * @file movement.c
+ * @brief Implementierung der Bewegungsfunktionen für die MicroRat.
+ *
+ * Dieses Modul stellt Funktionen bereit, um die MicroRat um definierte Zellenabstände
+ * vorwärts zu bewegen oder präzise Drehungen auszuführen. Es integriert den PD-Regler,
+ * Encoder-Rückmeldung und Sensor-basierte Kalibrierungen.
+ *
+ * @author Marcus Stake Alvarado
+ * @date 2025-06-26
+ * @version 1.0
+ *
+ * @dependencies
+ * - <stdlib.h>: Für Standardbibliotheksfunktionen
+ * - <math.h>: Für mathematische Funktionen wie roundf()
+ * - Funktionsschnittstellen/movement.h: Deklarationen der öffentlichen Schnittstellen dieses Moduls
+ * - Funktionsschnittstellen/sensors.h: Für Sensorlesungen
+ * - Funktionsschnittstellen/pd_controller.h: Für die Steuerung des PD-Reglers
+ * - Funktionsschnittstellen/system_interface.h: Für systemnahe Funktionen wie Delay_ms()
+ * - Hardwaresteuerung/hal_motor.h: Für die direkte Motorsteuerung
+ * - Hardwaresteuerung/hal_encoder.h: Für Encoder-Operationen
+ * - Hardwaresteuerung/hal_ir.h: Für Infrarot-Sensor-spezifische Funktionen
+ * - Hardwaresteuerung/hal_timer.h: Für Start/Stop Timer des Reglers
+ */
 #include <stdlib.h>
 #include <math.h>
-#include "Dave.h"
 #include "Funktionsschnittstellen/movement.h"
 #include "Funktionsschnittstellen/sensors.h"
-#include "Funktionsschnittstellen/pd_regler.h"
-#include "Funktionsschnittstellen/timer_utils.h"
+#include "Funktionsschnittstellen/system_interface.h"
+#include "Funktionsschnittstellen/pd_controller.h"
 #include "Hardwaresteuerung/hal_motor.h"
 #include "Hardwaresteuerung/hal_ir.h"
 #include "Hardwaresteuerung/hal_encoder.h"
+#include "Hardwaresteuerung/hal_timer.h"
 
-float KP_STRAIGHT = 42.0;
+/**
+ * @brief Standard-KP-Wert für den PD-Regler bei Geradeausfahrten.
+ * Dieser Wert wird temporär bei der Rekalibrierung angepasst.
+ */
+float KP_STRAIGHT = 44.75;
 
+// Flags für Drehbewegung und Kalibrierung
 volatile bool isTurning = false;
 volatile bool hasRecalibrated = false;
 
+/*
+ * @brief Bewegt die MicroRat genau eine Labyrinthzelle vorwärts.
+ *
+ * Diese Funktion setzt den Encoder zurück, berechnet die zu fahrende Distanz
+ * (mittels EstimateCellSize()), setzt das PD-Ziel und wartet, bis die Bewegung
+ * abgeschlossen ist. Danach wird der PD-Regler zurückgesetzt.
+ */
 void MoveOneCell(){
 	EncoderReset();
 	isTurning = false;
-
 	float distanceToDrive = EstimateCellSize();
-
-	setPIDGoalD(distanceToDrive,distanceToDrive);
-
-	TIMER_Start(&TIMER_REGLER);
-
-	while (!PIDdone()) {}
-	ResetPID();
+	setPDGoalD(distanceToDrive,distanceToDrive);
+	PDTimer_Start();
+	while (!PDdone()) {}
+	ResetPD();
 	hasRecalibrated = false;
 }
 
@@ -43,22 +74,28 @@ void MoveMultipleCells(int numCells){
     if (numCells <= 0) {
         return;
     }
-
     EncoderReset();
     isTurning = false;
-
-    // Berechne die Zieldistanz: Anzahl der Zellen * feste Referenz-Zellengröße
-    float distanceToDrive = (float)numCells * 150.0f;
-
-    setPIDGoalD(distanceToDrive, distanceToDrive);
-    TIMER_Start(&TIMER_REGLER);
-
-    while (!PIDdone()) {
-    }
-    ResetPID();
+    float distanceToDrive = (float)numCells * MM_PER_CELL_REFERENCE;
+    setPDGoalD(distanceToDrive, distanceToDrive);
+	PDTimer_Start();
+    while (!PDdone()) {}
+    ResetPD();
     hasRecalibrated = false;
 }
 
+/*
+ * @brief Schätzt die Länge einer Labyrinthzelle basierend auf Sensordaten.
+ *
+ * Diese Funktion nutzt den Frontsensor, um die Distanz zur nächsten Wand zu messen.
+ * Basierend auf dieser Messung und einer Referenzzellengröße wird die aktuelle
+ * Zellengröße geschätzt oder direkt die nutzbare Distanz zurückgegeben, wenn die Wand nah ist.
+ *
+ * @return Die geschätzte Länge einer Zelle in Millimetern.
+ * @details Die Funktion behandelt Fälle, in denen die Wand sehr nah ist anders als Fälle, in denen mehrere Zellen
+ * vor dem Roboter liegen. Sie subtrahiert `MIN_WALL_DISTANCE`, um die tatsächlich
+ * fahrbare Distanz zu erhalten.
+ */
 float EstimateCellSize() {
     float measuredDistance = GetDistanceFront_mm();
 
@@ -85,32 +122,53 @@ float EstimateCellSize() {
 		return estimatedCellLength;
     }
 }
-// WIP
-void RecalibrateAndMoveForward(){
-	// --- Rückwärtsfahren für die Rekalibrierung ---
-	//MotorsSetReverse();
+/**
+ * @brief Führt eine Rekalibrierung der MicroRat-Position durch und bewegt sie anschließend vorwärts.
+ *
+ * Diese Funktion fährt die MicroRat zuerst kurz rückwärts, um sie an eine bekannte Position
+ * zu bringen und die Encoder zurückzusetzen. Danach fährt sie eine
+ * feste kurze Distanz vorwärts mit einem temporär erhöhten KP-Wert,
+ * um eine präzise Ausgangsposition für weitere Bewegungen zu gewährleisten.
+ *
+ */
+void Recalibrate(){
 	MotorsSetSpeed(-3250, -3250);
 	Delay_ms(1000);
 	MotorsSetSpeed(0, 0);
-	EncoderReset(); // Encoder zurückgesetzt nach der Rückwärtsbewegung
-	//MotorsSetForward();
-	setPIDGoalD(40,40); // Ziel für eine Zelle vorwärts = 2cm
+	EncoderReset();
+	setPDGoalD(40,40);
 	KP_STRAIGHT = 150;
-	TIMER_Start(&TIMER_REGLER);
-	while (!PIDdone()) {} // Warte, bis die Vorwärtsbewegung abgeschlossen ist
-	ResetPID(); // Setze PID für die nächste Bewegung zurück
-	KP_STRAIGHT = 42.0;
+	PDTimer_Start();
+	while (!PDdone()) {}
+	ResetPD();
+	KP_STRAIGHT = 44.75;
 }
+
+/**
+ * @brief Stoppt die Bewegung der MicroRat.
+ *
+ * Setzt die PWM-Werte beider Motoren auf Null, um die MicroRat sofort anzuhalten.
+ */
 
 void Stop(){
 	MotorsSetSpeed(0, 0);
 }
 
+/**
+ * @brief Führt eine Drehung der MicroRat um eine spezifizierte Richtung aus.
+ * @param direction Die Art der Drehung.
+ *
+ * Die Funktion setzt die Encoder zurück, berechnet die zielgerichteten Distanzen
+ * für jedes Rad basierend auf dem Drehtyp und startet den PD-Regler.
+ * Nach einer 180-Grad-Drehung ('around') wird zusätzlich eine Rekalibrierung
+ * durchgeführt, um die Position zu verfeinern.
+ *
+ */
 void Turn (TurnDirection direction){
 	EncoderReset();
 	float goal_distance_L = 0.0f;
 	float goal_distance_R = 0.0f;
-	float distance_90_deg = 69;//DISTANCE_PER_90_DEGREE_MM;
+	float distance_90_deg = DISTANCE_PER_90_DEGREE_MM;
 	if(direction == left){
 		goal_distance_L = -distance_90_deg;
 		goal_distance_R = distance_90_deg;
@@ -126,16 +184,16 @@ void Turn (TurnDirection direction){
 			goal_distance_R = -distance_90_deg*1.85;
 		}
 	}
-	setPIDGoalD(goal_distance_R, goal_distance_L);
+	setPDGoalD(goal_distance_R, goal_distance_L);
 	isTurning = true;
-	TIMER_Start(&TIMER_REGLER);
-	while (!PIDdone()) {}
-	ResetPID();
+	PDTimer_Start();
+	while (!PDdone()) {}
+	ResetPD();
 	if (direction == around) {
 		// Rekalibrierung direkt nach einer 180-Grad-Drehung
-		TIMER_Stop(&TIMER_REGLER); // Sicherstellen, dass der Timer gestoppt ist
-		MotorsSetSpeed(0, 0);      // Sicherstellen, dass die Motoren stehen
-		RecalibrateAndMoveForward();
+		PDTimer_Stop();
+		MotorsSetSpeed(0, 0);
+		Recalibrate();
 	}
 }
 
