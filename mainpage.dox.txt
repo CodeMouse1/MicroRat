@@ -1,0 +1,19 @@
+/**
+ * @mainpage Micromouse: Autonome Labyrinth-Navigation
+ *
+ * Micromouse: Autonome Labyrinth-Navigation
+ * Dieses Projekt implementiert eine autonome Micromouse, die in der Lage ist, ein unbekanntes Labyrinth selbstständig zu erkunden, eine interne Karte zu erstellen und den optimalen Pfad zu    einer Zielzelle zu finden und auszuführen.
+
+Die Micromouse nutzt verschiedene Sensoren (z.B. Infrarotsensoren zur Wandabstandsmessung und Encoder zur präzisen Wegstreckenmessung) sowie ein PD-Regelsystem für exakte Motorbewegungen. Die Navigation basiert auf fortschrittlichen Pfadfindungsalgorithmen wie Flood Fill für die Distanzberechnung im Labyrinth und Wall Follower zur anfänglichen Erkundung.
+
+Die Softwarearchitektur ist modular aufgebaut und in verschiedene Schichten unterteilt:
+
+Eine Hardware-Abstraktionsschicht (HAL) kapselt die spezifischen Hardware-Treiber für Motoren, Sensoren und Timer.
+Funktionale Schnittstellen stellen grundlegende Dienste wie PID-Regelung, Bewegungssteuerung und Sensorverarbeitung bereit.
+Die Applikationsschicht enthält die übergeordnete Logik für die Labyrinthkartierung, die Pfadfindung und das Roboterzustandsmanagement.
+Dieses Design gewährleistet einen robusten und wartbaren Code, der eine hohe Präzision und Effizienz bei der Labyrinthdurchquerung und -lösung ermöglicht.
+ *
+ * @author Marcus Stake Alvarado
+ * @date 2025-06-26
+ * @version 1.0
+ */
