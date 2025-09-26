@@ -5,6 +5,7 @@ Projektdateien
 Hier finden Sie die Kernkomponenten des Projekts:
 
 MicroRat-Import.zip: Dieses zip enthält das gesamte 1.0 MicroRat Porjekt zumm importieren in DAVE IDE.
+MicroRatv1.5-Import.zip: Dieses zip enthält das gesamte 1.5 MicroRat Porjekt zumm importieren in DAVE IDE.
 HTML.zip: Dieses ZIP-Archiv enthält die vollständige, mit Doxygen generierte HTML-Dokumentation des MicroRat-Projekts.
 Nutzung: Entpacken Sie die Micromouse_Doxygen_Doku.zip-Datei. Öffnen Sie anschließend die Datei index.html im entpackten Ordner in Ihrem Webbrowser, um die detaillierte Dokumentation zu durchsuchen.
 Autor
