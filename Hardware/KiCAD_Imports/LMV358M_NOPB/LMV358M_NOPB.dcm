@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP LMV358M_NOPB
+D General Purpose, Low Voltage, Rail-to-Rail Output Operational Amplifiers
+K
+F http://www.ti.com/lit/ds/symlink/lmv358-n.pdf
+$ENDCMP
+#
+#End Doc Library

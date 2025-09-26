@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP LM7301SN1T1G
+D Standard (General Purpose) Amplifier 1 Circuit Rail-to-Rail 5-TSOP -40C ~ 85C,10.5 mA,32V
+K
+F https://www.onsemi.com/pdf/datasheet/lm7301-d.pdf
+$ENDCMP
+#
+#End Doc Library
