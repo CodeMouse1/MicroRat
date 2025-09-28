@@ -46,7 +46,7 @@ Zur Umgebungserfassung kommen folgende Sensoren zum Einsatz:
 
 <p float="center">
   <img src="Bilder & Videos/Bilder/Microrat1.5.png" width="350" />
-  <img src="Bilder & Videos/Bilder/Microrat1.5Top.png" width="600" /> 
+  <img src="Bilder & Videos/Bilder/Microrat1.5Top.png" width="350" /> 
 </p>
 Hier ein Link zu einer 3D Ansicht: [3D-Modell](https://a360.co/3X1qUvD)
 <div align="left">
