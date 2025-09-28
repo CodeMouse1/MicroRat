@@ -148,12 +148,13 @@ Wir freuen uns auf eure Erweiterungen! Wenn du an diesem Projekt mitarbeiten mö
 
 6. **Erstelle einen Pull Request**: Gehe zu deinem geforkten Repository auf GitLab und klicke auf die Schaltfläche "New Pull Request", um deine Änderungen zur Überprüfung einzureichen.
 
-## Kontaktinformationen
-Bei Fragen oder Problemen könnt Ihr uns gerne kontaktieren:
+## Entwickler
 
-Entwickler: [Marcus Stake Alvarado](mailto:s88832@bht-berlin.de)
+Hardware & Software: Marcus Stake Alvarado
 
-Entwickler: [Nico Hinrichs](mailto:s87913@bht-berlin.de)
+Ursprüngliches Hardware-Design: Nico Hinrichs
+
+Ansprechprofessor: Prof. Dipl.-Ing. Koshan Mahdi
 
 <div align="center">
 
