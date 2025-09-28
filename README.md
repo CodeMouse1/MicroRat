@@ -8,7 +8,7 @@
 Dieses Repository dokumentiert und bündelt das Projekt MicroRat – eine an der Micromouse orientierte Plattform für Studierenden der BHT.
 Es stellt ein vollständiges Paket aus Hardware und Software-Komponenten bereit und soll als Grundlage für eigene Projekte, Experimente und Weiterentwicklungen dienen.
 <div align="center">
-	<img src="https://media3.giphy.com/media/sbFY50AHtKuyYMWtKj/giphy.gif?cid=6c09b9523kuqddo3wfcj003jzzqmvzqegmzmrfjg5tf4ogdw&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=s" width= "300">
+	<img src="Bilder & Videos/Videos/VideoGIF.gif" width= "500">
 <div align="left">
 Wenn der Begriff einer Micromouse unbekannt ist findet man unter diesem Link ein Erläuterungsvideo:
 https://www.youtube.com/watch?v=ZMQbHMgK2rw
