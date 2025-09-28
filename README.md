@@ -68,6 +68,13 @@ Die MicroRat wird über den XMC-1402 Mikrocontroller gesteuert, der Sensoren aus
 	- Wandfolger (links/rechts), kartografiert
 	- Floodfill, Optimierung des schnellsten Weges zum Ziel
 - **Kommunikation:** Sensordaten über UART für Debugging & Logging
+<div align="center">
+
+<p float="center">
+  <img src="Bilder & Videos/Videos/mms_simu.gif" width="600" />
+</p>
+<div align="left">
+
 
 ## Verwendung von KiCad 8.0
 <div align="center">
