@@ -34,10 +34,10 @@ Zur Umgebungserfassung kommen folgende Sensoren zum Einsatz:
 ###### Antrieb
 - DC-Motoren mit Encodern für Antrieb und Drehzahlerfassung 
 
-##### Stromversorgung
+###### Stromversorgung
 - 2s1p Li-Ion Akkupack für stabile Energieversorgung  
 
-##### Steuerung & Schnittstellen
+###### Steuerung & Schnittstellen
 
 - XMC-1402 Mikrocontroller, programmierbar über Debug-Connector
 - UART Schnittstelle zur Ausgabe der Sensordaten 
