@@ -5,29 +5,51 @@
 
 <div align="left">
 
-Dieses Repository wurde im Rahmen der Fächer Verteilte Systeme und Steuergeräteentwicklung erstellt, um eine technische Dokumentation für das Projekt **MicroRat** für zukünftige Studenten darzulegen. Ziel dieses Projektes ist eine Hardware zu entwickeln, die an einer Micromouse orientiert ist. 
+Dieses Repository dokumentiert und bündelt das Projekt MicroRat – eine an der Micromouse orientierte Plattform für Studierenden der BHT.
+Es stellt ein vollständiges Paket aus Hardware und Software-Komponenten bereit und soll als Grundlage für eigene Projekte, Experimente und Weiterentwicklungen dienen.
 
 Wenn der Begriff einer Micromouse unbekannt ist findet man unter diesem Link ein Erläuterungsvideo:
 https://www.youtube.com/watch?v=ZMQbHMgK2rw
 
-
-## Technische Beschreibung
-Micromouse ist ein Robotik Wettbewerb, in dem sich kleine, autonome Roboterfahrzeuge in einem Labyrinth zurechtfinden müssen. Die Micromouse-Roboterfahrzeuge sind vollständig autonom. Sie bewegen sich ohne Hilfe von außen durch das Labyrinth. Es ist dem Entwickler freigestellt, wie das Fahrzeug die Wände des Labyrinthes erkennt; verbreitet sind vorn am Fahrzeug angebrachte und schräg nach außen ausgerichtete Infrarot-Abstandssensoren. Unsere Micromouse soll als Einstieg in diese Thematik dienen.
-
-**Unsere Umsetzung**
-
-Eine Micromouse sieht je nach Erbauer unterschiedlich aus. Unser Projekt soll grundlegende Funktionen erhalten, sodass die Benutzung und Programmierung für den User einfach ist. Für die Abstandserfassung sind Infrarot-Sensoren von SHARP jeweils in einem Winkel von 45° befestigt, sowie ein Ultraschall-Sensor an der Spitze montiert. Dadurch erfasst die Micromouse die genaue Position der Wände.
-
-An den beiden Motoren, welche zur Fortbewegung dienen, ist zudem ein Encoder für die Drehzahlerfassung befestigt. 
-
-Für eine Reibungslose Stromversorgung benutzen wir ein selbsterstelltes 2s1p Akkupack aus Li-Ion Zellen.
-
-Angesteuert wird das Kit über ein XMC-1402, der über ein Debug-Connector programmierbar ist. Unsere **MicroRat** kann die erfassten Daten der Sensoren dem User über eine serielle-Schnittstelle bereitstellen. Eine eigene Implementierung eines Pfadfindungsalgorithmus ist im Rahmen dieses Projektes nicht vorgesehen.  
-
 <div align="center">
 	<img src="https://image.futurezone.at/images/cfs_square_1232/7995559/micromouselabyrinthss.jpg" width= "300">
 <div align="center" > Dieses Bild stammt aus [futurezone](https://futurezone.at/digital-life/roboter-maus-micromouse-labyrinth-kuenstliche-intelligenz-nerf-gun-kurios-videos/402506761)
+<div align="left">
+<br>
 
+## Technische Beschreibung
+Micromouse ist ein internationaler Robotik-Wettbewerb, bei dem kleine, autonome Roboter ein Labyrinth selbstständig erkunden und den schnellsten Weg zum Ziel finden müssen.
+Die Fahrzeuge agieren vollkommen ohne externe Hilfe und entscheiden selbstständig, wie sie Hindernisse und Wände erkennen.
+
+_Die MicroRat soll als Einstieg in diese Thematik dienen._
+
+**Hardware Umsetzung**
+
+Das Aussehen einer Micromouse hängt stark vom jeweiligen Erbauer ab. Die MicroRat ist bewusst so gestaltet, dass sie grundlegende Funktionen mit einfacher Benutzbarkeit und Programmierbarkeit kombiniert.
+Zur Umgebungserfassung kommen folgende Sensoren zum Einsatz:
+###### Sensorik
+- SHARP Infrarot-Sensoren, jeweils im 90°-Winkel senkrecht zu den Wänden montiert
+- HC-SR04 Ultraschall-Sensor an der Vorderseite
+
+###### Antrieb
+- DC-Motoren mit Encodern für Antrieb und Drehzahlerfassung 
+
+##### Stromversorgung
+- 2s1p Li-Ion Akkupack für stabile Energieversorgung  
+
+##### Steuerung & Schnittstellen
+
+- XMC-1402 Mikrocontroller, programmierbar über Debug-Connector
+- UART Schnittstelle zur Ausgabe der Sensordaten 
+
+<div align="center">
+
+<p float="center">
+  <img src="/uploads/bf74777127c349fa86007dc492ed4637/_removal.ai__8c2d7579-b76e-41dc-b2b4-d0dd401914db-microrat3_DNO46E.png" width="550" />
+  <img src="/uploads/52044ddf1023aa9465557396d21156f6/Microrat5-removebg.png" width="600" /> 
+</p>
+Hier ein Link zu einer 3D Ansicht: [3D-Modell](https://a360.co/3X1qUvD)
+<div align="left">
 
 ## Verwendung von KiCad 8.0
 <div align="center">
@@ -45,24 +67,7 @@ Für dieses Projekt haben wir KiCad 8.0 gewählt aus folgenden Gründen:
 Für eine grundlegende Einführung in KiCad bitte dieser Ratte folgen: [🐀](https://docs.kicad.org/)
 
 
-## Hardware
-Diese bereitgestellte Hardware stellt eine vereinfachte Version einer Micromouse dar, wie sie heutzutage häufig anzutreffen ist. Grund dafür ist, dass heutige Micromäuse stark optimiert sind, wie erwähnt soll diese als eine Einstiegsplattform in die Welt der autnonomen Pfadfindung und Robotik dienen.
 
-**Grundlegender Aufbau:**
-
-- Umfeldsensorik **Front**
-- Aktorik und Verarbeitung **Mitte**
-- Schutz, Versorgung und weitere Anschluss-Pins **Hinterseite**
-
-Diese ausgelegten Pins bestehen aus 5 GPIOs, sowohl als auch einer UART und I²C Schnittstelle. Somit haben zukünftige Studenten die Möglichkeit je nach Anforderung die MicroRat zu erweitern.
-<div align="center">
-
-<p float="center">
-  <img src="/uploads/bf74777127c349fa86007dc492ed4637/_removal.ai__8c2d7579-b76e-41dc-b2b4-d0dd401914db-microrat3_DNO46E.png" width="550" />
-  <img src="/uploads/52044ddf1023aa9465557396d21156f6/Microrat5-removebg.png" width="600" /> 
-</p>
-Hier ein Link zu einer 3D Ansicht: [3D-Modell](https://a360.co/3X1qUvD)
-<div align="left">
 
 ## Anleitung
 
