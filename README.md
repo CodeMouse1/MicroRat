@@ -50,6 +50,24 @@ Zur Umgebungserfassung kommen folgende Sensoren zum Einsatz:
 </p>
 Hier ein Link zu einer 3D Ansicht: [3D-Modell](https://a360.co/3VB2RBQ)
 <div align="left">
+<br>
+
+**Software-Architektur**
+
+Die MicroRat wird über den XMC-1402 Mikrocontroller gesteuert, der Sensoren ausliest, Motoren ansteuert und die Labyrinthnavigation übernimmt.
+
+###### Entwicklungsumgebung
+- **Sprache:** C
+- **IDE:** DAVE™ 
+- **Debugging:** Über den Debug-Connector des XMC4500
+
+###### Hauptfunktionen
+- **Sensordaten-Auswertung:** IR- und Ultraschallsensor erkennen Wände und Hindernisse
+- **Motorsteuerung:** Drehzahlgeregelte Ansteuerung der DC-Motoren mittels PD-Regler
+- **Labyrinth-Algorithmus:**
+	- Wandfolger (links/rechts), kartografiert
+	- Floodfill, Optimierung des schnellsten Weges zum Ziel
+- **Kommunikation:** Sensordaten über UART für Debugging & Logging
 
 ## Verwendung von KiCad 8.0
 <div align="center">
