@@ -160,7 +160,7 @@ Ansprechprofessor: Prof. Dipl.-Ing. Koshan Mahdi
 
 **Viel Spaß mit der MicroRat**
 
-![Face-14-512](/Bilder & Videos/Bilder/Face-14-512.jpg)
+<img src="/Bilder & Videos/Bilder/Face-14-512.jpg" width= "800">
 
 
 
